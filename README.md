@@ -1,0 +1,1 @@
+# fooplugins-generator
