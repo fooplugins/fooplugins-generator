@@ -1,0 +1,34 @@
+{
+    "name": "fooplugins/generator",
+    "description": "Generate WordPress Plugins In Seconds",
+    "type": "library",
+    "require": {
+        "composer/installers": "v1.0.12"
+    },
+    "autoload"    : {
+        "psr-4" : {
+            "FooPlugins\\" : "includes"
+        }
+    },
+    "extra": {
+        "installer-paths": {
+            "vendor/{$name}/": ["type:wordpress-plugin"]
+        },
+        "mozart": {
+            "dep_namespace": "FooPlugins\\Generator\\Dependencies\\",
+            "dep_directory": "/includes/dependencies/",
+            "classmap_directory": "/classes/dependencies/",
+            "classmap_prefix": "FOOGEN_",
+            "packages": [
+                "erusev/parsedown"
+            ]
+        }
+    },
+    "license": "GPL 3.0",
+    "authors": [
+        {
+            "name": "FooPlugins",
+            "email": "info@fooplugins.com"
+        }
+    ]
+}

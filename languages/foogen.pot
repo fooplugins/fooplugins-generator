@@ -1,0 +1,89 @@
+# Copyright (C) 2020 Fooplugins Plugin Generator
+# This file is distributed under the same license as the Fooplugins Plugin Generator package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Fooplugins Plugin Generator\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: AhmadAwais <your_email@email.com>\n"
+"Last-Translator: Ahmad Awais <your_email@email.com>\n"
+"Report-Msgid-Bugs-To: https://AhmadAwais.com/contact/\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: boilerplates/simple/foogen_boilerplate.php:5
+msgid "Simple Plugin"
+msgstr ""
+
+#: boilerplates/simple/foogen_boilerplate.php:6
+msgid "A simple WordPress plugin including the bare minimum files in order to run. No pre-requisites needed to run before activation"
+msgstr ""
+
+#: boilerplates/simple/foogen_boilerplate.php:12, boilerplates/wppb/foogen_boilerplate.php:12
+msgid "Plugin Name"
+msgstr ""
+
+#: boilerplates/simple/foogen_boilerplate.php:14, boilerplates/wppb/foogen_boilerplate.php:14
+msgid "Cool Thing"
+msgstr ""
+
+#: boilerplates/simple/foogen_boilerplate.php:17, boilerplates/wppb/foogen_boilerplate.php:17
+msgid "Plugin Description"
+msgstr ""
+
+#: boilerplates/simple/foogen_boilerplate.php:19, boilerplates/wppb/foogen_boilerplate.php:19
+msgid "A cool description about what your cool thing can do"
+msgstr ""
+
+#: boilerplates/simple/foogen_boilerplate.php:22, boilerplates/wppb/foogen_boilerplate.php:27
+msgid "Author"
+msgstr ""
+
+#: boilerplates/simple/foogen_boilerplate.php:27, boilerplates/wppb/foogen_boilerplate.php:32
+msgid "Author URL"
+msgstr ""
+
+#: boilerplates/wppb/foogen_boilerplate.php:5
+msgid "WPPB Plugin"
+msgstr ""
+
+#: boilerplates/wppb/foogen_boilerplate.php:6
+msgid "A WordPress plugin using the WordPress Plugin Boilerplate as a template. No pre-requisites needed to run before activation"
+msgstr ""
+
+#: boilerplates/wppb/foogen_boilerplate.php:22
+msgid "Plugin URL"
+msgstr ""
+
+#: includes/admin/class-settings.php:26, includes/admin/class-settings.php:27
+msgid "FooPlugins Generator"
+msgstr ""
+
+#: includes/admin/views/generator.php:17
+msgid "Select a boilerplate!"
+msgstr ""
+
+#: includes/admin/views/generator.php:93
+msgid "FooPlugins Code Generator"
+msgstr ""
+
+#: includes/admin/views/generator.php:94
+msgid "Select a boilerplate, fill in all the details, and generate some code!"
+msgstr ""
+
+#: includes/admin/views/generator.php:97
+msgid "Boilerplate"
+msgstr ""
+
+#: includes/admin/views/generator.php:99
+msgid "select"
+msgstr ""
+
+#: includes/admin/views/generator.php:133
+msgid "Generate &amp; download .zip"
+msgstr ""

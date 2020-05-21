@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * Fired during plugin deactivation
+ *
+ * @link       {plugin_url}
+ * @since      1.0.0
+ *
+ * @package    {class}
+ * @subpackage {class}/includes
+ */
+
+/**
+ * Fired during plugin deactivation.
+ *
+ * This class defines all code necessary to run during the plugin's deactivation.
+ *
+ * @since      1.0.0
+ * @package    {class}
+ * @subpackage {class}/includes
+ * @author     Your Name <email@example.com>
+ */
+class {class}_Deactivator {
+
+	/**
+	 * Short Description. (use period)
+	 *
+	 * Long Description.
+	 *
+	 * @since    1.0.0
+	 */
+	public static function deactivate() {
+
+	}
+
+}

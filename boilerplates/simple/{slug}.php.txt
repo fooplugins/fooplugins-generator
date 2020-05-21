@@ -1,0 +1,37 @@
+<?php
+/**
+ * {name}
+ *
+ * {desc}
+ *
+ * Created : {date}
+ *
+ * Plugin Name: {name}
+ * Description: {desc}
+ * Version:     1.0.0
+ * Author:      {author}
+ * Author URI:  {author_url}
+ * License:     GPL-2.0+
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+ */
+
+if ( !class_exists( '{class}_Plugin' ) ) {
+
+	define( '{constant}_FILE', __FILE__ );
+	define( '{constant}_URL', plugin_dir_url( __FILE__ ) );
+	define( '{constant}_VERSION', '1.0.0' );
+	define( '{constant}_PATH', plugin_dir_path( __FILE__ ) );
+	define( '{constant}_SLUG', '{slug}' );
+
+	class {class}_Plugin {
+
+		/**
+		 * {class}_Plugin constructor
+		 */
+		function __construct() {
+		    //run any setup logic
+		}
+	}
+}
+
+new {class}_Plugin();
