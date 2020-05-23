@@ -10,6 +10,8 @@ Text Domain: foogen
 License:     GPL-2.0+
 Domain Path: /languages
 
+@fs_premium_only /includes/pro/
+
  */
 
 // If this file is called directly, abort.
@@ -30,6 +32,9 @@ if ( !defined('FOOGEN_SLUG' ) ) {
 	define( 'FOOGEN_MIN_WP', '5.0.0' );  // Minimum of WordPress 4.4 required
 }
 
+//include other plugin constants
+require_once( FOOGEN_PATH . 'includes/constants.php' );
+
 //include common global functions
 require_once( FOOGEN_PATH . 'includes/functions.php' );
 
@@ -37,7 +42,9 @@ require_once( FOOGEN_PATH . 'includes/functions.php' );
 if ( function_exists( 'foogen_fs' ) ) {
 	foogen_fs()->set_basename( true, __FILE__ );
 } else {
-	require_once( FOOGEN_PATH . 'includes/freemius.php' );
+	if ( ! function_exists( 'foogen_fs' ) ) {
+		require_once( FOOGEN_PATH . 'includes/freemius.php' );
+	}
 }
 
 //check minimum requirements before loading the plugin

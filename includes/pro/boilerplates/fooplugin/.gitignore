@@ -1,0 +1,6 @@
+*~
+apigen
+documentation
+vendor
+node_modules
+.DS_Store

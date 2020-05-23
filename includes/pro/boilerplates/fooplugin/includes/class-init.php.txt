@@ -1,13 +1,13 @@
 <?php
-namespace FooPlugins\Generator;
+namespace {namespace};
 
 /**
- * FooPlugins Generator Init Class
+ * {name} Init Class
  * Runs at the startup of the plugin
  * Assumes after all checks have been made, and all is good to go!
  */
 
-if ( !class_exists( 'FooPlugins\Generator\Init' ) ) {
+if ( !class_exists( '{namespace}\Init' ) ) {
 
 	class Init {
 
@@ -18,9 +18,9 @@ if ( !class_exists( 'FooPlugins\Generator\Init' ) ) {
 			//load the plugin text domain
 			add_action( 'plugins_loaded', function() {
 				load_plugin_textdomain(
-					FOOGEN_SLUG,
+					{constant}_SLUG,
 					false,
-					plugin_basename( FOOGEN_FILE ) . '/languages/'
+					plugin_basename( {constant}_FILE ) . '/languages/'
 				);
 			});
 
@@ -28,9 +28,10 @@ if ( !class_exists( 'FooPlugins\Generator\Init' ) ) {
 				new namespace\Admin\Init();
 			}
 
-			if ( foogen_fs()->is__premium_only() ) {
-				if ( foogen_fs()->can_use_premium_code() ) {
-					new namespace\Pro\Init();
+			//Check if the PRO version of {name} is running and run the PRO code
+			if ( {freemius_function}()->is__premium_only() ) {
+				if ( {freemius_function}()->can_use_premium_code() ) {
+					new {namespace}\Pro\Init();
 				}
 			}
 		}

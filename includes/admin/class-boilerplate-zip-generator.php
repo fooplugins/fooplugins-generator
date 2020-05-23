@@ -12,52 +12,54 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateZipGenerator' ) ) {
 	class BoilerplateZipGenerator {
 
 		var $options = array();
-		var $slug = '';
 
-		function __construct( $args = null ) {
+		function __construct( $boilerplate_object, $boilerplate_state, $zip_temp_directory = null) {
+			//first, calculate all variables from the state
+			$variables = array();
+			foreach( $boilerplate_state as $key => $item ) {
+				$variables['{' . $key . '}'] = $item;
+			}
+			$this->options['variables'] = $variables;
 
-			$defaults = array(
-				'name'                 => '',
-				'source_directory'     => '',
-				'process_extensions'   => array( 'php', 'css', 'js', 'txt', 'md', ),
-				'zip_root_directory'   => '',
-				'zip_temp_directory'   => null,
-				'download_filename'    => '',
-				'exclude_directories'  => array( '.git', '.svn', '.', '..', ),
-				'exclude_files'        => array( '.git', '.svn', '.DS_Store', '.gitignore', '.', '..', 'foogen_boilerplate.php', 'foogen_include.php' ),
-				'filename_filter'      => null,
-				'file_contents_filter' => null,
-				'post_process_action'  => null,
-				'variables'            => array(),
-			);
-
-			$this->options = wp_parse_args( $args, $defaults );
-
-			//check required args
-			if ( empty($this->options['name']) ) {
-				throw new Exception( 'BoilerplateZipGenerator class requires a name in order to function!' );
+			if ( empty( $zip_temp_directory ) ) {
+				$upload_dir = wp_upload_dir();
+				$zip_temp_directory = $upload_dir['path'];
 			}
 
-			$this->slug = sanitize_title_with_dashes( $this->options['name'] );
+			//The name of the file that is downloaded
+			$download_filename = isset( $boilerplate_object['download_filename'] ) ? $boilerplate_object['download_filename'] : $boilerplate_object['name'] . '.zip';
 
-			$this->options['zip_root_directory'] = $this->process_string( $this->options['zip_root_directory'] );
+			//The file extensions to process within the boilerplate directory
+			$process_extensions = isset( $boilerplate_object['process_extensions'] ) ? $boilerplate_object['process_extensions'] : array( 'php', 'css', 'js', 'txt', 'md' );
 
-			$this->options['download_filename'] = empty($this->options['download_filename']) ? "{$this->slug}.zip" : $this->options['download_filename'];
-			$this->options['download_filename'] = $this->process_string( $this->options['download_filename'] );
+			//The filename of the temp zip we will be creating
+			$zip_temp_filename = trailingslashit( $zip_temp_directory ) . sprintf( '%s-%s.zip', $boilerplate_object['name'], md5( print_r( $variables, true ) ) );
 
-			$this->options['zip_temp_filename'] = trailingslashit( $this->options['zip_temp_directory'] ) . sprintf( '%s-%s.zip', $this->slug, md5( print_r( $this->options['variables'], true ) ) );
-			$this->options['zip_temp_filename'] = $this->process_string( $this->options['zip_temp_filename'] );
+			//The root directory used within the created zip
+			$zip_root_directory = isset( $boilerplate_object['zip_root_directory'] ) ? $boilerplate_object['zip_root_directory'] : $boilerplate_object['name'];
+
+			$this->options = array_merge( $this->options, array(
+				'process_extensions'   => $process_extensions,
+				'download_filename'    => $this->process_string( $download_filename ),
+				'zip_root_directory'   => $this->process_string( $zip_root_directory ),
+				'zip_temp_filename'    => $this->process_string( $zip_temp_filename ),
+				'boilerplate'          => $boilerplate_object,
+				'exclude_directories'  => array( '.git', '.svn', '.', '..', ),
+				'exclude_files'        => array( '.git', '.svn', '.DS_Store', '.gitignore', '.', '..', 'foogen_boilerplate.php', 'foogen_include.php' ),
+			) );
 		}
 
 		/**
-		 * Creates the new zip file based on the source_directory
+		 * Creates the new zip file based on the boilerplate path
 		 */
 		function generate() {
 			$zip = new ZipArchive;
 
 			$zip->open( $this->options['zip_temp_filename'], ZipArchive::CREATE && ZipArchive::OVERWRITE );
 
-			$source_path = realpath( $this->options['source_directory'] );
+			$source_path = realpath( $this->options['boilerplate']['path'] );
+
+			do_action( "FooPlugins\Generator\Admin\BoilerplateZipGenerator\PreProcess", $source_path, $zip, $this );
 
 			$iterator = new RecursiveDirectoryIterator( $source_path );
 			foreach ( new RecursiveIteratorIterator( $iterator ) as $filename ) {
@@ -65,20 +67,22 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateZipGenerator' ) ) {
 				$base_filename = basename( $filename );
 
 				if ( strpos( $base_filename, 'foogen_' ) === 0) {
-					//we are dealing with a special file e.g. "foogen_include.php"
+					//we are dealing with a special file e.g. "foogen_special.php"
 					$special_file_type = basename( str_replace( 'foogen_', '', $base_filename ), '.php' );
 					do_action( "FooPlugins\Generator\Admin\BoilerplateZipGenerator\ProcessSpecialFile\{$special_file_type}", $filename, $zip, $this );
 				}
 
+				//check if we need to exclude files
 				if ( in_array( $base_filename, $this->options['exclude_files'] ) ) {
 					continue;
 				}
 
+				//check if we need to exclude directories
 				foreach ( $this->options['exclude_directories'] as $directory ) {
 					if ( strstr( $filename, "/{$directory}/" ) ) {
-						continue 2;
+						continue 2;// continue the parent foreach loop
 					}
-				} // continue the parent foreach loop
+				}
 
 				$zip_filepath = $filename->getRealPath();
 
@@ -91,7 +95,7 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateZipGenerator' ) ) {
 				$zip->addFromString( trailingslashit( $this->options['zip_root_directory'] ) . $zip_filename, $contents );
 			}
 
-			do_action( "FooPlugins\Generator\Admin\BoilerplateZipGenerator\PostProcess\{$this->slug}", $zip, $this );
+			do_action( "FooPlugins\Generator\Admin\BoilerplateZipGenerator\PostProcess", $zip, $this );
 
 			$zip->close();
 		}
@@ -112,7 +116,7 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateZipGenerator' ) ) {
 
 			$contents = $this->process_string( $contents );
 
-			$contents = apply_filters( "FooPlugins\Generator\Admin\BoilerplateZipGenerator\ProcessFileContents\{$this->slug}", $contents, $filename, $this );
+			$contents = apply_filters( 'FooPlugins\Generator\Admin\BoilerplateZipGenerator\ProcessFileContents', $contents, $filename, $this );
 
 			return $contents;
 		}
@@ -146,7 +150,7 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateZipGenerator' ) ) {
 			//rename php files
 			$filename = str_replace( '.php.txt', '.php', $filename );
 
-			$filename = apply_filters( "FooPlugins\Generator\Admin\BoilerplateZipGenerator\ProcessFilename\{$this->slug}", $filename, $this );
+			$filename = apply_filters( 'FooPlugins\Generator\Admin\BoilerplateZipGenerator\ProcessFilename', $filename, $this );
 
 			return $filename;
 		}

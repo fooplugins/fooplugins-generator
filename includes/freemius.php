@@ -17,14 +17,14 @@ if ( ! function_exists( 'foogen_fs' ) ) {
 				'slug'                => 'fooplugins-generator',
 				'type'                => 'plugin',
 				'public_key'          => 'pk_bfc88433ebe2aa2c7b66bfa24110f',
-				'is_premium'          => false,
+				'is_premium'          => true,
 				'has_addons'          => false,
-				'has_paid_plans'      => false,
+				'has_paid_plans'      => true,
 				'menu'                => array(
 					'slug'           => 'foogen-settings',
 					'support'        => false,
 					'parent'         => array(
-						'slug' => 'options-general.php',
+						'slug' => 'tools.php',
 					),
 				),
 			) );

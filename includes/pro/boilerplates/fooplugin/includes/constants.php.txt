@@ -1,0 +1,11 @@
+<?php
+/**
+ * Contains the Global constants used throughout {name}
+ */
+
+//options
+define( '{constant}_OPTION_DATA', '{slug}_data' );
+
+//transients
+define( '{constant}_TRANSIENT_UPDATED', '{slug}_updated' );
+define( '{constant}_TRANSIENT_ACTIVATION_REDIRECT', '{slug}_redirect' );

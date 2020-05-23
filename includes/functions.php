@@ -152,3 +152,14 @@ function __foogen_convert_to_class( $value ) {
 function __foogen_slugify( $value ) {
 	return sanitize_title_with_dashes( $value );
 }
+
+/**
+ * Converts a string into a function name that can be used for the Freemius global function
+ *
+ * @param $value
+ *
+ * @return string
+ */
+function __foogen_freemius_function( $value ) {
+	return __foogen_convert_to_function( $value ) . '_fs';
+}

@@ -1,0 +1,36 @@
+<?php
+/**
+ * Runs all the Freemius initialization code for {name}
+ */
+
+if ( ! function_exists( '{freemius_function}' ) ) {
+	// Create a helper function for easy SDK access.
+	function {freemius_function}() {
+		global ${freemius_function};
+
+		if ( ! isset( ${freemius_function} ) ) {
+			// Include Freemius SDK.
+			require_once {constant}_PATH . '/freemius/start.php';
+
+			//You should replace the below code with your Freemius integration code
+			// from https://dashboard.freemius.com/#!/live/plugins/{freemius_id}/integration/
+
+			${freemius_function} = fs_dynamic_init( array(
+				'id'                  => '{freemius_id}',
+				'slug'                => '{slug}',
+				'type'                => 'plugin',
+				'public_key'          => '{freemius_public_key}',
+				'is_premium'          => true,
+				'has_addons'          => false,
+				'has_paid_plans'      => true
+			) );
+		}
+
+		return ${freemius_function};
+	}
+
+	// Init Freemius.
+	{freemius_function}();
+	// Signal that SDK was initiated.
+	do_action( '{freemius_function}_loaded' );
+}

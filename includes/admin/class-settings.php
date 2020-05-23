@@ -10,7 +10,7 @@ if ( !class_exists( 'FooPlugins\Generator\Admin\Settings' ) ) {
 	class Settings {
 
 		public function __construct() {
-			add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
+			add_action( 'admin_menu', array( $this, 'add_menu' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'add_admin_stylesheet' ) );
 		}
 
@@ -21,17 +21,23 @@ if ( !class_exists( 'FooPlugins\Generator\Admin\Settings' ) ) {
 
 		}
 
-		public function add_settings_page() {
-			add_options_page(
+		/**
+		 * Add menu to the tools menu
+		 */
+		public function add_menu() {
+			add_management_page(
 				__( 'FooPlugins Generator' , 'foogen' ),
 				__( 'FooPlugins Generator' , 'foogen' ),
 				'manage_options',
 				'foogen-settings',
-				array( $this, 'create_settings_page' )
+				array( $this, 'render_generator_page' )
 			);
 		}
 
-		public function create_settings_page() {
+		/**
+		 * Renders the contents for the generator page
+		 */
+		public function render_generator_page() {
 			require_once FOOGEN_PATH . 'includes/admin/views/generator.php';
         }
 	}
