@@ -98,9 +98,11 @@ function foogen_get_all_boilerplates() {
 	$loader = new BoilerplateLoader();
 	$foogen_boilerplates = $loader->load_plugin_boilderplates();
 
-	//get the boilerplates saved in the current theme location
+	//TODO : get the boilerplates saved in the current theme location
 
-	return apply_filters( 'FooPlugins\Generator\Admin\GetAllBoilerplates', $foogen_boilerplates );
+	$foogen_boilerplates = apply_filters( 'FooPlugins\Generator\Admin\GetAllBoilerplates', $foogen_boilerplates );
+
+	return $foogen_boilerplates;
 }
 
 /**
