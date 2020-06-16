@@ -17,7 +17,7 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateProcessor' ) ) {
 		function __construct( $boilerplate_state ) {
 			//first, calculate all variables from the state
 			foreach( $boilerplate_state as $key => $item ) {
-				$this->variables['{' . $key . '}'] = $item;
+				$this->variables[ $key ] = $item;
 			}
 		}
 
@@ -28,17 +28,19 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateProcessor' ) ) {
 		 * @return string|string[]|null
 		 */
 		function process_string( $string ) {
-//			$phpStr = LightnCandy::compile( $string );
-//
-//			// Quick and deprecated way to get render function
-//			$renderer = LightnCandy::prepare($phpStr);
-//
-//			$return = $renderer( $this->variables );
-//
-//			return $return;
-
 			foreach ( $this->variables as $key => $value ) {
-				$string = preg_replace( '/(' . $key . ')/', $value, $string );
+				//find and replace all fields
+				$string = preg_replace( '/({' . $key . '})/', $value, $string );
+
+				//do conditional replacements
+				$regex = "{#if $key}(\n|\r\n)(.|\n|\r\n)*?({#endif $key}\n|{#endif $key}\r\n|{#endif $key})";
+
+				if ( !empty( $value ) ) {
+					$regex = "({#if $key}\n|{#if $key}\r\n|{#if $key}|{#endif $key}\n|{#endif $key}\r\n|{#endif $key})";
+					$string = preg_replace( '/' . $regex . '/', '', $string );
+				}
+
+				$string = preg_replace( '/' . $regex . '/', '', $string );
 			}
 
 			return $string;
