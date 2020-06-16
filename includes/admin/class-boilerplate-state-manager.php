@@ -10,31 +10,54 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateStateManager' ) ) {
 
 	class BoilerplateStateManager {
 
+		public $state = array();
+		public $errors = array();
+
 		function __construct() {
 			add_filter( 'Fooplugins\Generator\Admin\BoilerplateStateManager\GetFieldValue\input', array( $this, 'get_field_value_from_input' ), 10, 5 );
 			add_filter( 'Fooplugins\Generator\Admin\BoilerplateStateManager\GetFieldValue\field', array( $this, 'get_field_value_from_field' ), 10, 5 );
 			add_filter( 'Fooplugins\Generator\Admin\BoilerplateStateManager\GetFieldValue\state', array( $this, 'get_field_value_from_state' ), 10, 5 );
 		}
 
+		/**
+		 * Returns true if there are any errors
+		 * @return bool
+		 */
+		public function has_errors() {
+			return count( $this->errors ) > 0;
+		}
+
+		/**
+		 * Builds up boilerplate state from the data
+		 *
+		 * @param $boilerplate_object
+		 * @param $boilerplate_data
+		 *
+		 * @return mixed|void
+		 */
 		public function build_state( $boilerplate_object, $boilerplate_data ) {
-			$state = array();
+			$this->state = array();
 
 			//build up values for all fields
 			foreach( $boilerplate_object['fields'] as $field_key => $field ) {
 				$source = foogen_safe_get_from_array( 'source', $field, 'input' );
-				$value = apply_filters( 'Fooplugins\Generator\Admin\BoilerplateStateManager\GetFieldValue\\' . $source, null, $field_key, $field, $boilerplate_data, $state );
+				$value = apply_filters( 'Fooplugins\Generator\Admin\BoilerplateStateManager\GetFieldValue\\' . $source, null, $field_key, $field, $boilerplate_data, $this->state );
 				if ( $value !== null ) {
-					$state[ $field_key ] = $value;
+					$this->state[ $field_key ] = $value;
+
+					if ( empty( $value ) && isset( $field['required'] ) && $field['required'] ) {
+						$this->errors[] = $field;
+					}
 				}
 			}
 
 			//add the current date to the state
-			$state['date'] = date( 'Y-m-d' );
+			$this->state['date'] = date( 'Y-m-d' );
 
 			//allow the state to change from other places
-			$state = apply_filters( 'Fooplugins\Generator\Admin\BoilerplateStateManager\FinaliseState', $state, $boilerplate_object, $boilerplate_data );
+			$this->state = apply_filters( 'Fooplugins\Generator\Admin\BoilerplateStateManager\FinaliseState', $this->state, $boilerplate_object, $boilerplate_data );
 
-			return $state;
+			return $this->state;
 		}
 
 		/**

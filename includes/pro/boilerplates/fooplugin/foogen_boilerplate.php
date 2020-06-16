@@ -4,6 +4,7 @@ return array(
 	'name'               => 'fooplugin',
 	'title'              => __( 'FooPlugin', 'foogen' ),
 	'description'        => __( 'A FooPlugin', 'foogen' ),
+	'actions'       => 'download install',
 	'zip_root_directory' => '{filename}',
 	'download_filename'  => '{filename}.zip',
 	'process_extensions' => array( 'php', 'css', 'js', 'txt' ),

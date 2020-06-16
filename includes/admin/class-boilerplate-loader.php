@@ -43,14 +43,35 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateLoader' ) ) {
 
 					if ( 'foogen_boilerplate.php' === basename( $file ) ) {
 						$boilerplate_path = str_replace( '\foogen_boilerplate.php', '', $filename );
-						$boilerplate = include_once $filename;
+						$boilerplate = include $filename;
 						$boilerplate['path'] = $boilerplate_path;
-						$boilerplates[ $boilerplate['name'] ] = $boilerplate;
+						$boilerplates[ $boilerplate['name'] ] = $this->build_boilerplate( $boilerplate );
 					}
 				}
 			}
 
 			return $boilerplates;
+		}
+
+		/**
+		 * Sets some defaults for the boilerplate
+		 *
+		 * @param $boilerplate
+		 *
+		 * @return mixed
+		 */
+		private function build_boilerplate( $boilerplate ) {
+			if  ( !isset( $boilerplate['process_extensions'] ) ) {
+				$boilerplate['process_extensions'] = array( 'php', 'css', 'js', 'txt', 'md' );
+			}
+			if  ( !isset( $boilerplate['exclude_files'] ) ) {
+				$boilerplate['exclude_files'] = array( '.git', '.svn', '.DS_Store', '.gitignore', '.', '..', 'foogen_boilerplate.php', 'foogen_include.php' );
+			}
+			if  ( !isset( $boilerplate['exclude_directories'] ) ) {
+				$boilerplate['exclude_directories'] = array( '.git', '.svn', '.', '..', );
+			}
+
+			return $boilerplate;
 		}
 	}
 }

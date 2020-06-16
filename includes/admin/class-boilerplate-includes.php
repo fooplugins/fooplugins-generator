@@ -1,5 +1,5 @@
 <?php
-namespace FooPlugins\Generator\Pro\Admin;
+namespace FooPlugins\Generator\Admin;
 
 use FilesystemIterator;
 use FooPlugins\Generator\Admin\BoilerplateZipGenerator;
@@ -9,67 +9,52 @@ use RecursiveIteratorIterator;
 use ZipArchive;
 
 /**
- * Pro Admin Init Class
  * Runs all classes that need to run in the admin for PRO
  */
 
-if ( !class_exists( 'FooPlugins\Generator\Pro\Admin\BoilerplateZipGeneratorIncludes' ) ) {
+if ( !class_exists( 'FooPlugins\Generator\Admin\BoilerplateIncludes' ) ) {
 
-	class BoilerplateZipGeneratorIncludes {
+	class BoilerplateIncludes {
 
 		/**
 		 * Init constructor.
 		 */
 		function __construct() {
-			add_action( 'FooPlugins\Generator\Admin\BoilerplateZipGenerator\PreProcess', array(
+			add_action( 'FooPlugins\Generator\Admin\BoilerplateFileProcessor\PreProcess', array(
 				$this,
 				'handle_includes'
-			), 10, 3 );
+			), 10, 2 );
+
+			add_action( 'FooPlugins\Generator\Admin\BoilerplateIncludes\HandleInclude\zip', array(
+				$this,
+				'handle_zip_include'
+			), 10, 2 );
 		}
 
 		/**
-		 * @param $filename $source_path
-		 * @param $zip ZipArchive
-		 * @param $zip_generator BoilerplateZipGenerator
+		 * Handle any includes included in the boilerplate
+		 *
+		 * @param $source_path
+		 * @param $file_processor BoilerplateFileProcessor
 		 */
-		public function handle_includes( $source_path, $zip, $zip_generator ) {
-			$boilerplate = $zip_generator->options['boilerplate'];
+		public function handle_includes( $source_path, $file_processor ) {
+			$boilerplate = $file_processor->boilerplate;
 
 			if ( !array_key_exists( 'includes', $boilerplate ) ) {
 				return;
 			}
 
 			foreach ( $boilerplate['includes'] as $include ) {
-				if ( $include['type'] === 'zip' ) {
-
-					$this->handle_zip_include( $source_path, $include );
-
-				} else if ( $include['type'] === 'freemius' ) {
-
-					$include['zip_filename'] = 'freemius.zip';
-					$this->handle_freemius_include( $source_path, $include );
-
-				} else {
-					do_action( "FooPlugins\Generator\Admin\BoilerplateZipGenerator\PreProcess\HandleInclude\\" . $include['type'], $source_path, $zip, $this );
-				}
+				do_action( "FooPlugins\Generator\Admin\BoilerplateIncludes\HandleInclude\\" . $include['type'], $include, $source_path );
 			}
 		}
 
-		public function handle_freemius_include( $source_path, $include ) {
-			//first download and unzip the latest freemius SDK
-			$this->handle_zip_include( $source_path, $include );
-
-			$destination_directory = untrailingslashit( untrailingslashit( $source_path ) . DIRECTORY_SEPARATOR . $include['directory'] ) . DIRECTORY_SEPARATOR;
-			$freemius_directory    = untrailingslashit( $this->get_first_directory( $destination_directory ) ) . DIRECTORY_SEPARATOR;
-
-			//then move it all up a directory
-			$this->copy_files( $freemius_directory, $destination_directory );
-
-			//delete the original directory
-			$this->delete_directory( $freemius_directory );
-			rmdir( $freemius_directory );
-		}
-
+		/**
+		 * Copy files from one directory to another
+		 *
+		 * @param $source_directory
+		 * @param $target_directory
+		 */
 		public function copy_files( $source_directory, $target_directory ) {
 			$di = new RecursiveDirectoryIterator( $source_directory, FilesystemIterator::SKIP_DOTS );
 			$ri = new RecursiveIteratorIterator( $di, RecursiveIteratorIterator::CHILD_FIRST );
@@ -96,6 +81,13 @@ if ( !class_exists( 'FooPlugins\Generator\Pro\Admin\BoilerplateZipGeneratorInclu
 			}
 		}
 
+		/**
+		 * Get the name of the first directory
+		 *
+		 * @param $directory
+		 *
+		 * @return string|null
+		 */
 		public function get_first_directory( $directory ) {
 			$di = new RecursiveDirectoryIterator( $directory, FilesystemIterator::SKIP_DOTS );
 			$ri = new RecursiveIteratorIterator( $di, RecursiveIteratorIterator::SELF_FIRST );
@@ -107,6 +99,11 @@ if ( !class_exists( 'FooPlugins\Generator\Pro\Admin\BoilerplateZipGeneratorInclu
 			return null;
 		}
 
+		/**
+		 * Delete a directory
+		 *
+		 * @param $directory
+		 */
 		public function delete_directory( $directory ) {
 			$di = new RecursiveDirectoryIterator( $directory, FilesystemIterator::SKIP_DOTS );
 			$ri = new RecursiveIteratorIterator( $di, RecursiveIteratorIterator::CHILD_FIRST );
@@ -115,7 +112,13 @@ if ( !class_exists( 'FooPlugins\Generator\Pro\Admin\BoilerplateZipGeneratorInclu
 			}
 		}
 
-		public function handle_zip_include( $source_path, $include ) {
+		/**
+		 * Handle zip includes
+		 *
+		 * @param $include array
+		 * @param $source_path string
+		 */
+		public function handle_zip_include( $include, $source_path ) {
 			//get zip filename
 			$source = $include['source'];
 

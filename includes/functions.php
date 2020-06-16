@@ -88,14 +88,19 @@ function foogen_safe_get_from_request( $key ) {
  * @return mixed|void
  */
 function foogen_get_all_boilerplates() {
+	global $foogen_boilerplates;
+
+	if ( isset( $foogen_boilerplates ) ) {
+		return $foogen_boilerplates;
+	}
 
 	//get the default boilerplates built into the plugin
 	$loader = new BoilerplateLoader();
-	$boilerplates = $loader->load_plugin_boilderplates();
+	$foogen_boilerplates = $loader->load_plugin_boilderplates();
 
 	//get the boilerplates saved in the current theme location
 
-	return apply_filters( 'FooPlugins\Generator\Admin\GetAllBoilerplates', $boilerplates );
+	return apply_filters( 'FooPlugins\Generator\Admin\GetAllBoilerplates', $foogen_boilerplates );
 }
 
 /**
@@ -162,4 +167,37 @@ function __foogen_slugify( $value ) {
  */
 function __foogen_freemius_function( $value ) {
 	return __foogen_convert_to_function( $value ) . '_fs';
+}
+
+
+/**
+ * Adds a global message used on the generator form
+ *
+ * @param $message
+ * @param bool $is_error
+ */
+function foogen_add_global_message( $message, $is_error = false ) {
+	global $foogen_messages;
+
+	if ( !isset( $foogen_messages ) ) {
+		$foogen_messages = array();
+	}
+
+	$foogen_messages[] = array(
+		'message' => $message,
+		'error' => $is_error
+	);
+}
+
+/**
+ * Gets all global message used on the generator form
+ */
+function foogen_get_global_messages() {
+	global $foogen_messages;
+
+	if ( !isset( $foogen_messages ) ) {
+		$foogen_messages = array();
+	}
+
+	return $foogen_messages;
 }

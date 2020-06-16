@@ -14,7 +14,7 @@ if ( !class_exists( 'FooPlugins\Generator\Pro\Admin\Init' ) ) {
 		 * Init constructor.
 		 */
 		function __construct() {
-			new namespace\BoilerplateZipGeneratorIncludes();
+			new namespace\BoilerplateIncludesFreemius();
 		}
 	}
 }

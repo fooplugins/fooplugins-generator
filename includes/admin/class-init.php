@@ -16,7 +16,11 @@ if ( !class_exists( 'FooPlugins\Generator\Admin\Init' ) ) {
 		function __construct() {
 			new namespace\Updates();
 			new namespace\Settings();
-			new namespace\BoilerplateDownloadHandler();
+			new namespace\BoilerplateIncludes();
+			new namespace\BoilerplateActionHandler();
+			new namespace\BoilerplateActionHandlerDownload();
+			new namespace\BoilerplateActionHandlerInstall();
+			new namespace\BoilerplateActionHandlerShow();
 		}
 	}
 }
