@@ -199,9 +199,9 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
         </div>
         <?php } } ?>
 		<div class="foogen-generator-actions" style="display:none">
+			<button name="action" class="button button-primary" value="show"><?php _e( 'Generate', 'foogen' ); ?></button>
 			<button name="action" class="button button-primary" value="download"><?php _e( 'Generate &amp; download .zip', 'foogen' ); ?></button>
 			<button name="action" class="button button-primary" value="install"><?php _e( 'Generate &amp; Install Plugin', 'foogen' ); ?></button>
-			<button name="action" class="button button-primary" value="show"><?php _e( 'Generate', 'foogen' ); ?></button>
 
 			<?php foreach ( foogen_get_global_messages() as $message ) {
 				if ( $message['error'] ) {

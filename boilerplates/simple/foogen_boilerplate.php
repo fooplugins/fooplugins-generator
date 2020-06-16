@@ -4,7 +4,7 @@ return array(
 	'name'        => 'simple',
 	'title'       => __( 'Simple Plugin', 'foogen' ),
 	'description' => __( 'A simple WordPress plugin including the bare minimum files in order to run. No pre-requisites needed to run before activation', 'foogen' ),
-	'actions'       => 'download install',
+	'actions'       => 'download install show',
 	'zip_root_directory' => '{filename}',
 	'download_filename' => '{filename}.zip',
 	'process_extensions' => array( 'php', 'css', 'js', 'txt' ),
