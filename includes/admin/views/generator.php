@@ -50,6 +50,18 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
 			});
 		}
 
+		jQuery('.foogen-tabs a').click( function(e) {
+			jQuery('.foogen-tabs a').removeClass('nav-tab-active');
+
+			jQuery(this).addClass('nav-tab-active');
+
+			var activeTab = jQuery(this).data('tab');
+
+			jQuery( '.foogen-tab-content').hide();
+
+			jQuery( '.foogen-tab-content[data-tab="' + activeTab + '"]').show();
+		});
+
     });
 </script>
 <style>
@@ -128,6 +140,11 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
 		background: #fff;
 		overflow-x: hidden;
 		padding: 5px;
+	}
+
+	.foogen-generator .foogen-tabs a {
+		box-shadow: none !important;
+		outline: none !important;
 	}
 
 </style>

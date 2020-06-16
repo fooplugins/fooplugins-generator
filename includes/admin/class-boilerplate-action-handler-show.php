@@ -29,14 +29,22 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateActionHandlerShow' )
 		}
 
 		public function show_files_after_form() {
+			$tabs = '';
+			$tab_content = '';
+			$tab_active = 'nav-tab-active';
+			$tab_content_display = '';
+
 			foreach ( $this->processed_files as $file_name => $content ) {
-				echo '<div>';
-				echo '<h3>' . $file_name . '</h3>';
-				echo '<pre>';
-				echo  esc_html( $content );
-				echo '</pre>';
-				echo '</div>';
+				$file_slug = sanitize_title( $file_name );
+				$tabs .= '<a href="#' . $file_slug . '" data-tab="' . $file_slug . '" class="nav-tab ' . $tab_active . '">' . esc_html( $file_name ) . '</a>';
+				$tab_content .= '<div class="foogen-tab-content" ' . $tab_content_display . ' data-tab="' . $file_slug . '"><pre>' . esc_html( $content ) . '</pre></div>';
+				$tab_active = '';
+				$tab_content_display = 'style="display:none"';
 			}
+			echo '<div class="foogen-tabs nav-tab-wrapper">';
+			echo $tabs;
+			echo '</div>';
+			echo $tab_content;
 		}
 	}
 }
