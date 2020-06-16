@@ -19,6 +19,11 @@ return array(
 			'desc'     => __( 'A short description of the plugin. This should be no more than 150 characters. No markup here.', 'foogen' ),
 			'required' => true
 		),
+		'donate_url'    => array(
+			'label'    => __( 'Donate URL', 'foogen' ),
+			'type'     => 'text',
+			'desc'  => __( 'A URL for people to donate to the plugin', 'foogen' ),
+		),
 		'contributors' => array(
 			'label'    => __( 'Contributors', 'foogen' ),
 			'type'     => 'text',

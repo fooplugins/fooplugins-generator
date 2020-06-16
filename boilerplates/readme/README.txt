@@ -1,6 +1,8 @@
 === {name} ===
 Contributors: {contributors}
-Donate link: {plugin_url}/
+{#if donate_url}
+Donate link: {donate_url}/
+{#endif donate_url}
 Tags: {tags}
 Requires at least: 5.0.0
 Tested up to: 5.4
