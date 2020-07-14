@@ -30,7 +30,20 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateProcessor' ) ) {
 		function process_string( $string ) {
 			foreach ( $this->variables as $key => $value ) {
 				//find and replace all fields
-				$string = preg_replace( '/({' . $key . '})/', $value, $string );
+				$string = preg_replace_callback(
+					'/({' . $key . '(:.*)?})/',
+					function ( $matches ) use( $value ) {
+						if ( isset( $matches[2] ) ) {
+							$function = trim( $matches[2], ':' );
+							if ( function_exists( '__foogen_' . $function ) ) {
+								return call_user_func( '__foogen_' . $function, $value );
+							} else if ( function_exists( $function ) ) {
+								return call_user_func( $function, $value );
+							}
+						}
+						return $value;
+					},
+					$string );
 
 				//do conditional replacements
 				$regex = "{#if $key}(\n|\r\n)(.|\n|\r\n)*?({#endif $key}\n|{#endif $key}\r\n|{#endif $key})";
