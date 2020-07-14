@@ -132,14 +132,20 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
 		color: #0b0;
 	}
 
-	.foogen-generator pre {
-		max-height: 500px;
-		overflow: scroll;
+	.foogen-generator .foogen-tab-content {
+		padding-top: 10px;
+	}
+
+	.foogen-generator .foogen-tab-content textarea {
+		height: 500px;
+		width: 100%;
 		border: solid 1px #aaa;
 		border-radius: 2px;
 		background: #fff;
 		overflow-x: hidden;
 		padding: 5px;
+		font-family: "courier new", monospace;
+		font-size: 12px;
 	}
 
 	.foogen-generator .foogen-tabs a {
