@@ -1,0 +1,334 @@
+<?php
+
+namespace {namespace}\Admin\{cpt};
+
+use {namespace}\Admin\Metaboxes\CustomPostTypeMetaboxFieldGroup;
+
+if ( ! class_exists( '{namespace}\Admin\{cpt}\MetaboxTest' ) ) {
+
+	class MetaboxTest extends CustomPostTypeMetaboxFieldGroup {
+
+		function __construct() {
+			//filter to allow field group to be overridden
+			$field_group = apply_filters( '{namespace}\Admin\{cpt}\MetaboxTest\FieldGroup',
+				array(
+					'tabs' => array(
+						array(
+							'id'     => 'portrait',
+							'label'  => __( 'Portrait', '{slug}' ),
+							'icon'   => 'dashicons-format-image',
+							'fields' => array(),
+							'type'   => 'featured_image',
+							'featuredImage' => true
+						),
+						array(
+							'id'     => '{tax_slug}s',
+							'label'  => __( '{tax}s', '{slug}' ),
+							'icon'   => 'dashicons-groups',
+							'type'   => 'taxonomy',
+							'fields' => array(),
+							'taxonomy' => {constant}_CT_{tax_constant}
+						),
+						array(
+							'id'     => 'nested',
+							'label'  => __( 'Parent', '{slug}' ),
+							'icon'   => 'dashicons-editor-table',
+							'tabs' => array(
+								array(
+									'id'     => 'child1',
+									'label'  => __( 'Child 1', '{slug}' ),
+									'fields' => array(
+										array(
+											'id'       => 'child1help',
+											'label'    => __( 'Help Field', '{slug}' ),
+											'desc'     => __( 'This tab shows an example repeater field for capturing notes. This is powerful when you want the ability to capture an unknown amount of data.', '{slug}' ),
+											'type'     => 'help',
+										),
+										array(
+											'id'       => 'repeater',
+											//'label'    => __( 'Repeater Field', '{slug}' ),
+											'desc'     => __( 'A repeater field', '{slug}' ),
+											'type'     => 'repeater',
+											'button'   => __( 'Add Note', '{slug}' ),
+											'fields'   => array(
+												array(
+													'id'       => 'text',
+													'label'    => __( 'Text Field', '{slug}' ),
+													'desc'     => __( 'A test text field', '{slug}' ),
+													'type'     => 'text',
+												),
+												array(
+													'id'       => 'number',
+													'label'    => __( 'Number Field', '{slug}' ),
+													'desc'     => __( 'A test number field', '{slug}' ),
+													'type'     => 'number',
+												),
+												array(
+													'id'       => 'textarea',
+													'label'    => __( 'Textarea Field', '{slug}' ),
+													'desc'     => __( 'A test textarea field', '{slug}' ),
+													'type'     => 'textarea',
+												),
+												array(
+													'id'       => 'checkbox',
+													'label'    => __( 'Checkbox Field', '{slug}' ),
+													'desc'     => __( 'A test Checkbox field', '{slug}' ),
+													'type'     => 'checkbox',
+												),
+												array(
+													'id'       => 'select',
+													'label'    => __( 'Select Field', '{slug}' ),
+													'desc'     => __( 'A test select field', '{slug}' ),
+													'type'     => 'select',
+													'choices' => array(
+														'option1' => __( 'Option 1', '{slug}' ),
+														'option2' => __( 'Option 2', '{slug}' ),
+														'option3' => __( 'Option 3', '{slug}' ),
+														'option4' => __( 'Option 4', '{slug}' ),
+													)
+												),
+												array(
+													'id'       => 'manage',
+													'type'     => 'manage',
+												),
+											)
+										)
+									)
+								),
+								array(
+									'id'     => 'child2',
+									'label'  => __( 'Child 2', '{slug}' ),
+									'fields' => array(
+										array(
+											'id'       => 'child2text',
+											'label'    => __( 'Another Text Field', '{slug}' ),
+											'type'     => 'text',
+										),
+										array(
+											'id'       => 'child2textarea',
+											'label'    => __( 'More Text', '{slug}' ),
+											'type'     => 'textarea',
+										)
+									)
+								),
+							)
+						),
+						array(
+							'id'     => 'fields',
+							'label'  => __( 'Simple Fields', '{slug}' ),
+							'icon'   => 'dashicons-editor-kitchensink',
+							'fields' => array(
+								array(
+									'id'       => 'help',
+									'desc'     => __( 'This tab shows all the available fields. This is a help field.', '{slug}' ),
+									'type'     => 'help',
+								),
+								array(
+									'id'       => 'heading',
+									'desc'     => __( 'Heading Field', '{slug}' ),
+									'type'     => 'heading',
+								),
+								array(
+									'id'       => 'singlecolumn',
+									'desc'     => __( 'Another help field but with class set to foometafields-icon foometafields-icon-promo', '{slug}' ),
+									'class'    => 'foometafields-icon-promo',
+									'type'     => 'help',
+								),
+								array(
+									'id'       => 'text',
+									'label'    => __( 'Block Field', '{slug}' ),
+									'desc'     => __( 'This field should have the label above the input', '{slug}' ),
+									'type'     => 'text',
+								),
+								array(
+									'id'       => 'text1',
+									'label'    => __( 'Inline Field', '{slug}' ),
+									'desc'     => __( 'This field should have the label next to the input', '{slug}' ),
+									'layout'   => 'inline',
+									'type'     => 'text',
+								),
+								array(
+									'id'       => 'text2',
+									'desc'     => __( 'This field will not have a label', '{slug}' ),
+									'type'     => 'text',
+								),
+								array(
+									'id'       => 'number',
+									'label'    => __( 'Number Field', '{slug}' ),
+									'desc'     => __( 'A test number field', '{slug}' ),
+									'type'     => 'number',
+								),
+								array(
+									'id'       => 'textarea',
+									'label'    => __( 'Textarea Field', '{slug}' ),
+									'desc'     => __( 'A test textarea field', '{slug}' ),
+									'type'     => 'textarea',
+								),
+								array(
+									'id'       => 'select',
+									'label'    => __( 'Select Field', '{slug}' ),
+									'desc'     => __( 'A test select field', '{slug}' ),
+									'type'     => 'select',
+									'choices' => array(
+										'option1' => __( 'Option 1', '{slug}' ),
+										'option2' => __( 'Option 2', '{slug}' ),
+										'option3' => __( 'Option 3', '{slug}' ),
+										'option4' => __( 'Option 4', '{slug}' ),
+									)
+								),
+								array(
+									'id'       => 'checkbox',
+									'label'    => __( 'Checkbox Field', '{slug}' ),
+									'layout'   => 'inline',
+									'type'     => 'checkbox',
+								),
+								array(
+									'id'       => 'color',
+									'label'    => __( 'Color Field', '{slug}' ),
+									'desc'     => __( 'A test HTML5 color input field', '{slug}' ),
+									'type'     => 'color',
+								),
+								array(
+									'id'       => 'colorpicker',
+									'label'    => __( 'Colorpicker Field', '{slug}' ),
+									'desc'     => __( 'A test colorpicker field using the colorpicker built into WP', '{slug}' ),
+									'type'     => 'colorpicker',
+								),
+							)
+						),
+						array(
+							'id'     => 'fields',
+							'label'  => __( 'List Fields', '{slug}' ),
+							'icon'   => 'dashicons-list-view',
+							'fields' => array(
+								array(
+									'id'       => 'radioinline',
+									'label'    => __( 'Radio Fields Inline', '{slug}' ),
+									'desc'     => __( 'Radio Fields Inline', '{slug}' ),
+									'layout'   => 'inline',
+									'type'     => 'radiolist',
+									'spacer'   => '',
+									'choices' => array(
+										'option1' => __( 'Option 1', '{slug}' ),
+										'option2' => __( 'Option 2', '{slug}' ),
+										'option3' => __( 'Option 3', '{slug}' ),
+										'option4' => __( 'Option 4', '{slug}' ),
+									)
+								),
+								array(
+									'id'       => 'checkboxlistinline',
+									'label'    => __( 'Checkboxes Inline', '{slug}' ),
+									'desc'     => __( 'A test checkboxlist field', '{slug}' ),
+									'layout'   => 'inline',
+									'type'     => 'checkboxlist',
+									'choices' => array(
+										'option1' => __( 'Option 1', '{slug}' ),
+										'option2' => __( 'Option 2', '{slug}' ),
+										'option3' => __( 'Option 3', '{slug}' ),
+										'option4' => __( 'Option 4', '{slug}' ),
+									)
+								),
+								array(
+									'id'       => 'radiostacked',
+									'label'    => __( 'Radio Fields Stacked', '{slug}' ),
+									'desc'     => __( 'Radio Fields Stacked', '{slug}' ),
+									'type'     => 'radiolist',
+									// 'spacer'   => '',
+									'choices' => array(
+										'option1' => __( 'Option 1', '{slug}' ),
+										'option2' => __( 'Option 2', '{slug}' ),
+										'option3' => __( 'Option 3', '{slug}' ),
+										'option4' => __( 'Option 4', '{slug}' ),
+									)
+								),
+								array(
+									'id'       => 'checkboxlist',
+									'label'    => __( 'Checkboxlist stacked', '{slug}' ),
+									'desc'     => __( 'A test checkboxlist field', '{slug}' ),
+									'type'     => 'checkboxlist',
+									'choices' => array(
+										'option1' => __( 'Option 1', '{slug}' ),
+										'option2' => __( 'Option 2', '{slug}' ),
+										'option3' => __( 'Option 3', '{slug}' ),
+										'option4' => __( 'Option 4', '{slug}' ),
+									)
+								),
+								array(
+									'id'       => 'htmllist',
+									'label'    => __( 'HTML List Field (radio)', '{slug}' ),
+									'desc'     => __( 'A test html list field', '{slug}' ),
+									'type'     => 'htmllist',
+									'spacer'   => '',
+									'choices' => array(
+										'option1' => array(
+											'html' => '<img src="https://dummyimage.com/32x32/000/fff&text=1" />',
+											'label' => __( 'Option 1', '{slug}' ),
+											'tooltip' => __( 'A tooltip for Option 1', '{slug}' ),
+										),
+										'option2' => array(
+											'html' => '<img src="https://dummyimage.com/32x32/000/fff&text=2" />',
+											'label' => __( 'Option 2', '{slug}' ),
+										)
+									)
+								),
+								array(
+									'id'       => 'htmllist2',
+									'label'    => __( 'HTML List Field (checkbox)', '{slug}' ),
+									'list-type'=> 'checkbox',
+									'desc'     => __( 'A test html list field', '{slug}' ),
+									'type'     => 'htmllist',
+									'spacer'   => '',
+									'choices' => array(
+										'option1' => array(
+											'html' => '<img src="https://dummyimage.com/32x32/000/fff&text=1" />',
+											'label' => __( 'Option 1', '{slug}' ),
+											'tooltip' => __( 'A tooltip for Option 1', '{slug}' ),
+										),
+										'option2' => array(
+											'html' => '<img src="https://dummyimage.com/32x32/000/fff&text=2" />',
+											'label' => __( 'Option 2', '{slug}' ),
+										),
+										'option3' => array(
+											'html' => '<img src="https://dummyimage.com/32x32/000/fff&text=3" />',
+											'label' => __( 'Option 3', '{slug}' ),
+										)
+									)
+								),
+								array(
+									'id'       => 'suggest',
+									'label'    => __( 'Suggest Field (autocomplete without a key)', '{slug}' ),
+									'type'     => 'suggest',
+									'default'  => '',
+									'placeholder' => __( 'Start typing', '{slug}' ),
+									'query_type' => 'post',
+									'query_data' => {constant}_CPT_{cpt_constant}
+								),
+								array(
+									'id'       => 'selectize',
+									'label'    => __( 'selectize Field (autocomplete with a key)', '{slug}' ),
+									'type'     => 'Selectize',
+									'placeholder' => __( 'Start typing', '{slug}' ),
+									'query_type' => 'post',
+									'query_data' => {constant}_CPT_{cpt_constant}
+								)
+							)
+						)
+					)
+				) );
+
+			parent::__construct(
+				array(
+					'post_type'      => {constant}_CPT_{cpt_constant},
+					'metabox_id'     => 'test',
+					'metabox_title'  => __( 'Test Metabox for {cpt}', '{slug}' ),
+					'priority'       => 'default', //low, default, high
+					'meta_key'       => {constant}_{cpt_constant}_META_TEST,
+					'text_domain'    => {constant}_SLUG,
+					'plugin_url'     => {constant}_URL,
+					'plugin_version' => {constant}_VERSION
+				),
+				$field_group
+			);
+		}
+	}
+}

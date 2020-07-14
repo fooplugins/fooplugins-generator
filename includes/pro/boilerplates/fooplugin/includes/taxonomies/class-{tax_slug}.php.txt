@@ -1,0 +1,40 @@
+<?php
+namespace {namespace}\Taxonomies;
+
+if( ! class_exists( '{namespace}\Taxonomies\{tax}' ) ) {
+ 	class {tax} {
+
+		function __construct() {
+			add_action( 'init', array( $this, 'register' ) );
+		}
+
+		function register() {
+			//allow others to override the {tax} taxonomy register args
+			//see all available args : https://codex.wordpress.org/Function_Reference/register_taxonomy
+			$args = apply_filters( '{namespace}\Taxonomies\{tax}\RegisterArgs',
+				array(
+					'labels' => array(
+						'name'              => __( '{tax}s', 'taxonomy general name', '{slug}' ),
+						'singular_name'     => __( '{tax}', 'taxonomy singular name', '{slug}' ),
+						'search_items'      => __( 'Search {tax}s', '{slug}' ),
+						'all_items'         => __( 'All {tax}s', '{slug}' ),
+						'parent_item'       => __( 'Parent {tax}', '{slug}' ),
+						'parent_item_colon' => __( 'Parent {tax}:', '{slug}' ),
+						'edit_item'         => __( 'Edit {tax}', '{slug}' ),
+						'update_item'       => __( 'Update {tax}', '{slug}' ),
+						'add_new_item'      => __( 'Add New {tax}', '{slug}' ),
+						'new_item_name'     => __( 'New {tax}'.' Name', '{slug}' ),
+						'menu_name'         => __( '{tax}s', '{slug}' ),
+					),
+					'hierarchical' 		=> true,
+					'show_ui'           => true,
+					'show_in_rest'  	=> true,
+					'show_admin_column' => true
+				)
+			);
+
+			register_taxonomy( {constant}_CT_{tax_constant}, array( {constant}_CPT_{cpt_constant} ), $args );
+
+		}
+	}
+}
