@@ -198,6 +198,8 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
                 <input id="<?php echo esc_attr( $field_id ); ?>" type="text" name="<?php echo $boilerplate_name; ?>[<?php echo $field_key; ?>]" value="<?php echo esc_attr( $field_value ); ?>"/>
             <?php } else if ( $field['type'] === 'textarea' ) { ?>
                 <textarea id="<?php echo esc_attr( $field_id ); ?>" name="<?php echo $boilerplate_name; ?>[<?php echo $field_key; ?>]"><?php echo esc_html( $field_value ) ?></textarea>
+			<?php } else if ( $field['type'] === 'checkbox' ) { ?>
+				<input id="<?php echo esc_attr( $field_id ); ?>" type="checkbox" name="<?php echo $boilerplate_name; ?>[<?php echo $field_key; ?>]" value="on" <?php echo ( $field_value === 'on' ) ? ' checked="checked"' : ''; ?> />
             <?php } ?>
 			<?php if ( isset( $field['desc'] ) ) { ?>
 				<span><?php echo esc_html( $field['desc'] ); ?></span>
