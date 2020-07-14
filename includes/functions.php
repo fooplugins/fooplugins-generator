@@ -112,7 +112,7 @@ function foogen_get_all_boilerplates() {
  *
  * @return string
  */
-function __foogen_convert_to_function( $value ) {
+function __foogen_function( $value ) {
 	return strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '_', $value ) ) );
 }
 
@@ -123,7 +123,7 @@ function __foogen_convert_to_function( $value ) {
  *
  * @return string
  */
-function __foogen_convert_to_filename( $value ) {
+function __foogen_filename( $value ) {
 	return strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '-', $value ) ) );
 }
 
@@ -134,7 +134,7 @@ function __foogen_convert_to_filename( $value ) {
  *
  * @return string
  */
-function __foogen_convert_to_constant( $value ) {
+function __foogen_constant( $value ) {
 	return strtoupper( trim( preg_replace( '/[^A-Za-z0-9-]+/', '_', $value ) ) );
 }
 
@@ -145,7 +145,7 @@ function __foogen_convert_to_constant( $value ) {
  *
  * @return string
  */
-function __foogen_convert_to_class( $value ) {
+function __foogen_class( $value ) {
 	return str_replace( ' ', '_', ucwords( str_replace( array('-', '_'), ' ', $value ) ) );
 }
 
@@ -161,6 +161,28 @@ function __foogen_slugify( $value ) {
 }
 
 /**
+ * Uppercase a string
+ *
+ * @param $value
+ *
+ * @return string
+ */
+function __foogen_uppercase( $value ) {
+	return strtoupper( $value );
+}
+
+/**
+ * Lowercase a string
+ *
+ * @param $value
+ *
+ * @return string
+ */
+function __foogen_lowercase( $value ) {
+	return strtolower( $value );
+}
+
+/**
  * Converts a string into a function name that can be used for the Freemius global function
  *
  * @param $value
@@ -168,7 +190,7 @@ function __foogen_slugify( $value ) {
  * @return string
  */
 function __foogen_freemius_function( $value ) {
-	return __foogen_convert_to_function( $value ) . '_fs';
+	return __foogen_function( $value ) . '_fs';
 }
 
 
