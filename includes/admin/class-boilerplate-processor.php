@@ -91,7 +91,7 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateProcessor' ) ) {
 				return $this->variables[ $key ];
 			}
 
-			return false;
+			return '';
 		}
 	}
 }

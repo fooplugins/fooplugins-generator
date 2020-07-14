@@ -13,6 +13,7 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateFileProcessor' ) ) {
 	class BoilerplateFileProcessor {
 
 		public $boilerplate = array();
+		public $rules = null;
 
 		/**
 		 * @var BoilerplateProcessor
@@ -85,19 +86,10 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateFileProcessor' ) ) {
 				return true;
 			}
 
-			//exclude_files rule
-			if ( isset( $this->boilerplate['rules'] ) ) {
-				foreach ( $this->boilerplate['rules'] as $rule ) {
-					if ( isset( $rule['type'] ) && 'exclude_files' === $rule['type'] ) {
-						$field = $rule['field'];
-						$expected_value = $rule['value'];
-						$actual_value = $this->boilerplate_processor->get_field_value( $field );
-
-						if ( $expected_value === $actual_value ) {
-							if ( in_array( $base_filename, $rule['files'] ) ) {
-								return true;
-							}
-						}
+			foreach ( $this->get_rules_for_current_state() as $rule ) {
+				if ( isset( $rule['type'] ) && 'exclude_files' === $rule['type'] ) {
+					if ( in_array( $base_filename, $rule['files'] ) ) {
+						return true;
 					}
 				}
 			}
@@ -121,24 +113,41 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateFileProcessor' ) ) {
 				return true;
 			}
 
-			//exclude_directories rule
-			if ( isset( $this->boilerplate['rules'] ) ) {
-				foreach ( $this->boilerplate['rules'] as $rule ) {
-					if ( isset( $rule['type'] ) && 'exclude_directories' === $rule['type'] ) {
-						$field = $rule['field'];
-						$expected_value = $rule['value'];
-						$actual_value = $this->boilerplate_processor->get_field_value( $field );
-
-						if ( $expected_value === $actual_value ) {
-							if ( in_array( $directory, $rule['directories'] ) ) {
-								return true;
-							}
-						}
+			foreach ( $this->get_rules_for_current_state() as $rule ) {
+				if ( isset( $rule['type'] ) && 'exclude_directories' === $rule['type'] ) {
+					if ( in_array( $directory, $rule['directories'] ) ) {
+						return true;
 					}
 				}
 			}
 
 			return false;
+		}
+
+		/**
+		 * Build up a set of rules that are valid for the current state
+		 *
+		 * @return array
+		 */
+		function get_rules_for_current_state() {
+			if ( !isset( $this->rules ) ) {
+				$this->rules = array();
+
+				if ( isset( $this->boilerplate['rules'] ) ) {
+					foreach ( $this->boilerplate['rules'] as $rule ) {
+						$field = $rule['field'];
+						$expected_value = $rule['value'];
+						$actual_value = $this->boilerplate_processor->get_field_value( $field );
+
+						//check if the rule if valid and store it
+						if ( $expected_value === $actual_value ) {
+							$this->rules[] = $rule;
+						}
+					}
+				}
+			}
+
+			return $this->rules;
 		}
 
 		/**
