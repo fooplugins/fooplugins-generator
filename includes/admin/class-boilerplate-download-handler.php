@@ -42,8 +42,6 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateDownloadHandler' ) )
 
 			$boilerplate_state = $state_manager->build_state( $boilerplate_object, $boilerplate_data );
 
-
-
 			$upload_dir = wp_upload_dir();
 
 			//create the generator

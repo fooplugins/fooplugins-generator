@@ -78,5 +78,20 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateProcessor' ) ) {
 
 			return $filename;
 		}
+
+		/**
+		 * Get a field value from the state
+		 *
+		 * @param $key
+		 *
+		 * @return bool|mixed
+		 */
+		function get_field_value( $key ) {
+			if ( isset( $this->variables[ $key ] ) ) {
+				return $this->variables[ $key ];
+			}
+
+			return false;
+		}
 	}
 }
