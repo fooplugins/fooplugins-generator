@@ -1,5 +1,6 @@
 <?php
 namespace FooPlugins\Generator\Admin;
+use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ZipArchive;
@@ -33,7 +34,7 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateFileProcessor' ) ) {
 
 			$processed = array();
 
-			$iterator = new RecursiveDirectoryIterator( $source_path );
+			$iterator = new RecursiveDirectoryIterator( $source_path, FilesystemIterator::SKIP_DOTS );
 			foreach ( new RecursiveIteratorIterator( $iterator ) as $filename ) {
 
 				$base_filename = basename( $filename );
@@ -45,15 +46,13 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateFileProcessor' ) ) {
 				}
 
 				//check if we need to exclude files
-				if ( in_array( $base_filename, $this->boilerplate['exclude_files'] ) ) {
+				if ( $this->should_exclude_file( $filename ) ) {
 					continue;
 				}
 
 				//check if we need to exclude directories
-				foreach ( $this->boilerplate['exclude_directories'] as $directory ) {
-					if ( strstr( $filename, "/{$directory}/" ) ) {
-						continue 2;// continue the parent foreach loop
-					}
+				if ( $this->should_exclude_directory( $filename ) ) {
+					continue;
 				}
 
 				$dest_filename = ltrim( str_replace( $source_path, '', $filename->getRealPath() ), '\\' );
@@ -70,6 +69,76 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateFileProcessor' ) ) {
 			$processed = apply_filters( "FooPlugins\Generator\Admin\BoilerplateCodeGenerator\PostProcess", $processed, $this );
 
 			return $processed;
+		}
+
+		/**
+		 * Determine if we should exclude a file
+		 *
+		 * @param $filename
+		 *
+		 * @return bool
+		 */
+		function should_exclude_file( $filename ) {
+			$base_filename = basename( $filename );
+
+			if ( in_array( $base_filename, $this->boilerplate['exclude_files'] ) ) {
+				return true;
+			}
+
+			//exclude_files rule
+			if ( isset( $this->boilerplate['rules'] ) ) {
+				foreach ( $this->boilerplate['rules'] as $rule ) {
+					if ( isset( $rule['type'] ) && 'exclude_files' === $rule['type'] ) {
+						$field = $rule['field'];
+						$expected_value = $rule['value'];
+						$actual_value = $this->boilerplate_processor->get_field_value( $field );
+
+						if ( $expected_value === $actual_value ) {
+							if ( in_array( $base_filename, $rule['files'] ) ) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
+		/**
+		 * Determine if we should exclude a directory
+		 *
+		 * @param $filename
+		 *
+		 * @return bool
+		 */
+		function should_exclude_directory( $filename ) {
+			$source_path = realpath( $this->boilerplate['path'] );
+
+			$directory = ltrim( str_replace( $source_path, '', $filename->getPath() ), '\\' );
+
+			if ( in_array( $directory, $this->boilerplate['exclude_directories'] ) ) {
+				return true;
+			}
+
+			//exclude_directories rule
+			if ( isset( $this->boilerplate['rules'] ) ) {
+				foreach ( $this->boilerplate['rules'] as $rule ) {
+					if ( isset( $rule['type'] ) && 'exclude_directories' === $rule['type'] ) {
+						$field = $rule['field'];
+						$expected_value = $rule['value'];
+						$actual_value = $this->boilerplate_processor->get_field_value( $field );
+
+						if ( $expected_value === $actual_value ) {
+							if ( in_array( $directory, $rule['directories'] ) ) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+
+			return false;
 		}
 
 		/**
