@@ -24,6 +24,9 @@ if ( !class_exists( '{namespace}\Init' ) ) {
 				);
 			});
 
+			new namespace\PostTypes\{cpt}();
+			new namespace\Taxonomies\{tax}();
+
 			if ( is_admin() ) {
 				new namespace\Admin\Init();
 			}

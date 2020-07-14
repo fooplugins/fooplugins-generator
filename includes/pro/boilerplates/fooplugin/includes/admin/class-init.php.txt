@@ -16,6 +16,8 @@ if ( !class_exists( '{namespace}\Admin\Init' ) ) {
 		function __construct() {
 			new namespace\Updates();
 			new namespace\Settings();
+
+			new namespace\{cpt}\MetaboxTest();
 		}
 	}
 }

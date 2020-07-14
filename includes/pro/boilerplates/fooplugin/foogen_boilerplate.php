@@ -4,10 +4,10 @@ return array(
 	'name'               => 'fooplugin',
 	'title'              => __( 'FooPlugin', 'foogen' ),
 	'description'        => __( 'A FooPlugin', 'foogen' ),
-	'actions'       => 'download install',
+	'actions'            => 'download install',
 	'zip_root_directory' => '{filename}',
 	'download_filename'  => '{filename}.zip',
-	'process_extensions' => array( 'php', 'css', 'js', 'txt' ),
+	'process_extensions' => array( 'php', 'css', 'js', 'txt', 'json', '.gitignore' ),
 	'includes'           => array(
 		array(
 			'directory' => 'freemius',
@@ -34,7 +34,15 @@ return array(
 		'freemius_id'         => array(
 			'label' => __( 'Freemius Plugin ID', 'foogen' ),
 			'type'  => 'text',
-			'desc'  => __( 'The ID of your Freemius plugin. You can find this in the Freemius Dashbaord.', 'foogen' )
+			'desc'  => __( 'The ID of your Freemius plugin. You can find this in the Freemius Dashbaord.', 'foogen' ),
+			'rules' => array(
+				array(
+					'value' => '',
+					'exclude_files' => array(
+						''
+					)
+				)
+			)
 		),
 		'freemius_public_key' => array(
 			'label'   => __( 'Freemius Public Key', 'foogen' ),
@@ -52,6 +60,36 @@ return array(
 			'type'    => 'text',
 			'default' => site_url()
 		),
+		'cpt'          => array(
+			'label'   => __( 'Custom Post Type (Singular)', 'foogen' ),
+			'type'    => 'text',
+			'default' => __( 'Movie', 'foogen' ),
+		),
+		'cpt_slug'    => array(
+			'source'   => 'field',
+			'field'    => 'cpt',
+			'function' => '__foogen_slugify',
+		),
+		'cpt_constant' => array(
+			'source'   => 'field',
+			'field'    => 'cpt',
+			'function' => '__foogen_constant',
+		),
+		'tax'          => array(
+			'label'   => __( 'Taxonomy (Singlular)', 'foogen' ),
+			'type'    => 'text',
+			'default' => __( 'Genre', 'foogen' ),
+		),
+		'tax_slug'    => array(
+			'source'   => 'field',
+			'field'    => 'tax',
+			'function' => '__foogen_slugify',
+		),
+		'tax_constant' => array(
+			'source'   => 'field',
+			'field'    => 'tax',
+			'function' => '__foogen_constant',
+		),
 		'slug'                => array(
 			'source'   => 'field',
 			'field'    => 'name',
@@ -60,22 +98,22 @@ return array(
 		'filename'            => array(
 			'source'   => 'field',
 			'field'    => 'name',
-			'function' => '__foogen_convert_to_filename',
+			'function' => '__foogen_filename',
 		),
 		'class'               => array(
 			'source'   => 'field',
 			'field'    => 'name',
-			'function' => '__foogen_convert_to_class',
+			'function' => '__foogen_class',
 		),
 		'function'               => array(
 			'source'   => 'field',
 			'field'    => 'name',
-			'function' => '__foogen_convert_to_function',
+			'function' => '__foogen_function',
 		),
 		'constant'            => array(
 			'source'   => 'field',
 			'field'    => 'name',
-			'function' => '__foogen_convert_to_constant',
+			'function' => '__foogen_constant',
 		),
 		'freemius_function' => array(
 			'source' => 'field',

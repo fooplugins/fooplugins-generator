@@ -79,3 +79,75 @@ function {slug}_safe_get_from_array( $key, $array, $default ) {
 function {slug}_safe_get_from_request( $key ) {
 	return {slug}_safe_get_from_array( $key, $_REQUEST, null );
 }
+
+/**
+ * Clean variables using sanitize_text_field. Arrays are cleaned recursively.
+ * Non-scalar values are ignored.
+ *
+ * @param string|array $var Data to sanitize.
+ * @return string|array
+ */
+function {slug}_clean( $var ) {
+	if ( is_array( $var ) ) {
+		return array_map( '{slug}_clean', $var );
+	} else {
+		return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
+	}
+}
+
+/**
+ * Safe way to get value from the request object
+ *
+ * @param $key
+ * @param null $default
+ * @param bool $clean
+ *
+ * @return mixed
+ */
+function {slug}_safe_get_from_post( $key, $default = null, $clean = true ) {
+	if ( isset( $_POST[$key] ) ) {
+		$value = wp_unslash( $_POST[$key] );
+		if ( $clean ) {
+			return {slug}_clean( $value );
+		}
+		return $value;
+	}
+
+	return $default;
+}
+
+/**
+ * Run {slug}_clean over posted textarea but maintain line breaks.
+ *
+ * @param  string $var Data to sanitize.
+ * @return string
+ */
+function {slug}_sanitize_textarea( $var ) {
+	return implode( "\n", array_map( '{slug}_clean', explode( "\n", $var ) ) );
+}
+
+/**
+ * Return a sanitized and unslashed key from $_GET
+ * @param $key
+ *
+ * @return string|null
+ */
+function {slug}_sanitize_key( $key ) {
+	if ( isset( $_GET[$key] ) ) {
+		return sanitize_key( wp_unslash( $_GET[ $key ] ) );
+	}
+	return null;
+}
+
+/**
+ * Return a sanitized and unslashed value from $_GET
+ * @param $key
+ *
+ * @return string|null
+ */
+function {slug}_sanitize_text( $key ) {
+	if ( isset( $_GET[$key] ) ) {
+		return sanitize_text_field( wp_unslash( $_GET[ $key ] ) );
+	}
+	return null;
+}
