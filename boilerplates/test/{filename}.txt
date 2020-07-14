@@ -1,0 +1,41 @@
+This is the generated output which showcases what the generator can do
+
+Simple Variable Substitution
+============================
+If you enter a {variable} in the file and it is declared in foogen_boilerplate.php, then it will be replaced with the value you entered in the form.
+For example, in this test generator, 3 variables are declared in foogen_boilerplate.php ("name", "title", "filename")
+For "Name", you entered "{name}"
+
+Function Variable Substitutions
+===============================
+You can also call functions when performing the substitution
+For example {variable:func} will substitute the value of "variable" after it has been passed through function "func"
+There are some built-in functions that can be used:
+* {variable:lowercase} - make the variable lowercase - eg. {name:lowercase}
+* {variable:uppercase} - make the variable uppercase - eg. {name:uppercase}
+* {variable:slugify} - make the variable safe for use as a slug - eg. {name:slugify}
+* {variable:class} - make the variable safe for use as a class name - eg. {name:class}
+* {variable:constant} - make the variable safe for use as a constant - eg. {name:constant}
+* {variable:filename} - make the variable safe for use as a filename - eg. {name:filename}
+* {variable:function} - make the variable safe for use as a function name - eg. {name:function}
+
+Filename Substitution
+=====================
+You can use {variables} in filenames too.
+Also, filenames ending in .php.txt will be renamed automatically to .php
+
+Conditional Blocks
+==================
+Conditional blocks will be included if the variable has a value. For example:
+{#if variable}
+This line will only be included if "variable" has a value
+This applies to any number of lines between the #if and #endif
+{#endif variable}
+
+If you entered a Title, then it will show in a block below. If not, then you will not see the line at all.
+{#if title}
+------------------------------------------------------
+This block would not have shown if the title was blank
+For "Title", you entered "{title}"
+------------------------------------------------------
+{#endif title}
