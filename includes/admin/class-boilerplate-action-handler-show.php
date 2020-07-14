@@ -37,7 +37,7 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateActionHandlerShow' )
 			foreach ( $this->processed_files as $file_name => $content ) {
 				$file_slug = sanitize_title( $file_name );
 				$tabs .= '<a href="#' . $file_slug . '" data-tab="' . $file_slug . '" class="nav-tab ' . $tab_active . '">' . esc_html( $file_name ) . '</a>';
-				$tab_content .= '<div class="foogen-tab-content" ' . $tab_content_display . ' data-tab="' . $file_slug . '"><pre>' . esc_html( $content ) . '</pre></div>';
+				$tab_content .= '<div class="foogen-tab-content" ' . $tab_content_display . ' data-tab="' . $file_slug . '"><textarea>' . esc_html( $content ) . '</textarea></div>';
 				$tab_active = '';
 				$tab_content_display = 'style="display:none"';
 			}
