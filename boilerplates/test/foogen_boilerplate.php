@@ -18,6 +18,10 @@ return array(
 			'label'    => __( 'Optional Title', 'foogen' ),
 			'type'     => 'text',
 		),
+		'includes' => array(
+			'label' => __( 'Includes', 'foogen' ),
+			'type' => 'checkbox'
+		),
 		'filename' => array(
 			'source' => 'field',
 			'field' => 'name',
@@ -39,6 +43,14 @@ return array(
 			'value' => '',
 			'directories' => array(
 				'includes\optional'
+			)
+		),
+		array(
+			'type' => 'exclude_directories',
+			'field' => 'includes',
+			'value' => '',
+			'directories' => array(
+				'includes'
 			)
 		)
 	)

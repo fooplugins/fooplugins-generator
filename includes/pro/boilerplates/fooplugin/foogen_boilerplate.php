@@ -31,6 +31,10 @@ return array(
 			'type'  => 'text',
 			'desc'  => __( 'The root namespace of the plugin', 'foogen' )
 		),
+		'freemius' => array(
+			'label' => __( 'Use Freemius', 'foogen' ),
+			'type' => 'checkbox'
+		),
 		'freemius_id'         => array(
 			'label' => __( 'Freemius Plugin ID', 'foogen' ),
 			'type'  => 'text',
