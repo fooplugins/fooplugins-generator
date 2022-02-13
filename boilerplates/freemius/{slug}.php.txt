@@ -2,7 +2,7 @@
 /*
 Plugin Name: {name}
 Description: {desc}
-Version:     1.0.0
+Version:     0.0.1
 Author:      {author}
 Author URI:  {author_url}
 Text Domain: {slug}
@@ -26,7 +26,7 @@ if ( !defined('{constant}_SLUG' ) ) {
 	define( '{constant}_PATH', plugin_dir_path( __FILE__ ) );
 	define( '{constant}_URL', plugin_dir_url( __FILE__ ) );
 	define( '{constant}_FILE', __FILE__ );
-	define( '{constant}_VERSION', '1.0.0' );
+	define( '{constant}_VERSION', '0.0.1' );
 	define( '{constant}_MIN_PHP', '5.4.0' ); // Minimum of PHP 5.4 required for autoloading, namespaces, etc
 	define( '{constant}_MIN_WP', '4.4.0' );  // Minimum of WordPress 4.4 required
 }
@@ -52,7 +52,7 @@ if ( require_once {constant}_PATH . 'includes/startup-checks.php' ) {
 	//start autoloader
 	require_once( {constant}_PATH . 'vendor/autoload.php' );
 
-	spl_autoload_register( '{slug}_autoloader' );
+	spl_autoload_register( '{function}_autoloader' );
 
 	//hook in activation
 	register_activation_hook( __FILE__, array( '{namespace}\Activation', 'activate' ) );

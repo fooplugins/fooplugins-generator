@@ -14,6 +14,13 @@ return array(
 			'default'  => __( 'Bob The Builder', 'foogen' ),
 			'required' => true
 		),
+		'namespace'         => array(
+			'label'    => __( 'Test Slashes', 'foogen' ),
+			'type'     => 'text',
+			'default'  => __( 'CoolPlugins\\CoolThing', 'foogen' ),
+			'desc'     => __( 'This variable is used to test values that contain slashes, for example namespaces within PHP files.', 'foogen' ),
+			'required' => true
+		),
 		'title'         => array(
 			'label'    => __( 'Optional Title', 'foogen' ),
 			'type'     => 'text',

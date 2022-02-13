@@ -1,0 +1,6 @@
+{
+  "developer_id": 0,
+  "plugin_id": {freemius_id},
+  "public_key": "pk_1234",
+  "secret_key": "sk_1234"
+}

@@ -8,7 +8,7 @@
  *
  * @param $class
  */
-function {slug}_autoloader( $class ) {
+function {function}_autoloader( $class ) {
 	/* Only autoload classes from this namespace */
 	if ( false === strpos( $class, {constant}_NAMESPACE ) ) {
 		return;
@@ -23,7 +23,7 @@ function {slug}_autoloader( $class ) {
 	$class_path = strtolower( implode( '/', $class_path ) );
 
 	/* Convert class name format to file name format */
-	$class_file = {slug}_uncamelize( $class_file );
+	$class_file = {function}_uncamelize( $class_file );
 	$class_file = str_replace( '_', '-', $class_file );
 	$class_file = str_replace( '--', '-', $class_file );
 
@@ -38,7 +38,7 @@ function {slug}_autoloader( $class ) {
  *
  * @return string
  */
-function {slug}_uncamelize( $str ) {
+function {function}_uncamelize( $str ) {
 	$str    = lcfirst( $str );
 	$lc     = strtolower( $str );
 	$result = '';
@@ -59,7 +59,7 @@ function {slug}_uncamelize( $str ) {
  *
  * @return mixed
  */
-function {slug}_safe_get_from_array( $key, $array, $default ) {
+function {function}_safe_get_from_array( $key, $array, $default ) {
 	if ( is_array( $array ) && array_key_exists( $key, $array ) ) {
 		return $array[ $key ];
 	} else if ( is_object( $array ) && property_exists( $array, $key ) ) {
@@ -76,8 +76,8 @@ function {slug}_safe_get_from_array( $key, $array, $default ) {
  *
  * @return mixed
  */
-function {slug}_safe_get_from_request( $key ) {
-	return {slug}_safe_get_from_array( $key, $_REQUEST, null );
+function {function}_safe_get_from_request( $key ) {
+	return {function}_safe_get_from_array( $key, $_REQUEST, null );
 }
 
 /**
@@ -87,9 +87,9 @@ function {slug}_safe_get_from_request( $key ) {
  * @param string|array $var Data to sanitize.
  * @return string|array
  */
-function {slug}_clean( $var ) {
+function {function}_clean( $var ) {
 	if ( is_array( $var ) ) {
-		return array_map( '{slug}_clean', $var );
+		return array_map( '{function}_clean', $var );
 	} else {
 		return is_scalar( $var ) ? sanitize_text_field( $var ) : $var;
 	}
@@ -104,11 +104,11 @@ function {slug}_clean( $var ) {
  *
  * @return mixed
  */
-function {slug}_safe_get_from_post( $key, $default = null, $clean = true ) {
+function {function}_safe_get_from_post( $key, $default = null, $clean = true ) {
 	if ( isset( $_POST[$key] ) ) {
 		$value = wp_unslash( $_POST[$key] );
 		if ( $clean ) {
-			return {slug}_clean( $value );
+			return {function}_clean( $value );
 		}
 		return $value;
 	}
@@ -117,13 +117,13 @@ function {slug}_safe_get_from_post( $key, $default = null, $clean = true ) {
 }
 
 /**
- * Run {slug}_clean over posted textarea but maintain line breaks.
+ * Run {function}_clean over posted textarea but maintain line breaks.
  *
  * @param  string $var Data to sanitize.
  * @return string
  */
-function {slug}_sanitize_textarea( $var ) {
-	return implode( "\n", array_map( '{slug}_clean', explode( "\n", $var ) ) );
+function {function}_sanitize_textarea( $var ) {
+	return implode( "\n", array_map( '{function}_clean', explode( "\n", $var ) ) );
 }
 
 /**
@@ -132,7 +132,7 @@ function {slug}_sanitize_textarea( $var ) {
  *
  * @return string|null
  */
-function {slug}_sanitize_key( $key ) {
+function {function}_sanitize_key( $key ) {
 	if ( isset( $_GET[$key] ) ) {
 		return sanitize_key( wp_unslash( $_GET[ $key ] ) );
 	}
@@ -145,7 +145,7 @@ function {slug}_sanitize_key( $key ) {
  *
  * @return string|null
  */
-function {slug}_sanitize_text( $key ) {
+function {function}_sanitize_text( $key ) {
 	if ( isset( $_GET[$key] ) ) {
 		return sanitize_text_field( wp_unslash( $_GET[ $key ] ) );
 	}

@@ -4,6 +4,7 @@ return array(
 	'name'               => 'fooplugin',
 	'title'              => __( 'Freemius Plugin', 'foogen' ),
 	'description'        => __( 'A full plugin, including all initialization code for Freemius. Before activating, run "composer install" and "npm install" in the plugin root directory.', 'foogen' ),
+	'post_install_message' => __( 'Plugin installed successfully! You need to do a few things before you can activate it : run "composer install" and "npm install" in the plugin root directory.', 'foogen' ),
 	'actions'            => 'download install',
 	'zip_root_directory' => '{filename}',
 	'download_filename'  => '{filename}.zip',

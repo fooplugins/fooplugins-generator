@@ -74,6 +74,9 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateProcessor' ) ) {
 			//rename .php.txt files to .php
 			$filename = str_replace( '.php.txt', '.php', $filename );
 
+			//rename .json.txt files to .json
+			$filename = str_replace( '.json.txt', '.json', $filename );
+
 			$filename = apply_filters( 'FooPlugins\Generator\Admin\BoilerplateProcessor\ProcessFilename', $filename, $this );
 
 			return $filename;

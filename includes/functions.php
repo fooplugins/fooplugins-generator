@@ -193,7 +193,6 @@ function __foogen_freemius_function( $value ) {
 	return __foogen_function( $value ) . '_fs';
 }
 
-
 /**
  * Adds a global message used on the generator form
  *

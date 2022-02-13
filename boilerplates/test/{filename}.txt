@@ -18,6 +18,7 @@ There are some built-in functions that can be used:
 * {variable:constant} - make the variable safe for use as a constant - eg. {name:constant}
 * {variable:filename} - make the variable safe for use as a filename - eg. {name:filename}
 * {variable:function} - make the variable safe for use as a function name - eg. {name:function}
+* {variable:addslashes} - run the addslashes function on the variable - eg. {namespace:addslashes}
 
 Filename Substitution
 =====================

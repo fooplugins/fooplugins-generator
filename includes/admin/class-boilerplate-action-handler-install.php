@@ -29,7 +29,8 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateActionHandlerInstall
 			$zip_manager = $this->create_zip( $boilerplate_object, $boilerplate_state, $processor, $processed_files );
 
 			if ( $this->install( $zip_manager->zip_temp_filename ) ) {
-				foogen_add_global_message( __( 'Plugin installed successfully! Head over to the plugin page to activate it.', 'foogen' ) );
+				$post_install_message = array_key_exists( 'post_install_message', $boilerplate_object ) ? $boilerplate_object['post_install_message'] :  __( 'Plugin installed successfully! Head over to the plugin page to activate it.', 'foogen' );
+				foogen_add_global_message( $post_install_message );
 			}
 		}
 
