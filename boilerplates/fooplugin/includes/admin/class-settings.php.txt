@@ -18,7 +18,7 @@ if ( !class_exists( '{namespace}\Admin\Settings' ) ) {
 		 * Adds the admin stylesheet
 		 */
 		public function add_admin_stylesheet() {
-			//enqueue any scripts or stylesheets you want to use on the settings page
+			// enqueue any scripts or stylesheets you want to use on the settings page.
 		}
 
 		/**
