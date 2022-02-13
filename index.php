@@ -2,16 +2,13 @@
 /*
 Plugin Name: FooPlugins Plugin Generator
 Description: Generate the code for a new WordPress plugin in seconds
-Version:     1.0.1
+Version:     1.0.2
 Author:      FooPlugins
 Plugin URI:  https://fooplugins.com/generator
 Author URI:  https://fooplugins.com
 Text Domain: foogen
 License:     GPL-2.0+
 Domain Path: /languages
-
-@fs_premium_only /includes/pro/
-
  */
 
 // If this file is called directly, abort.
@@ -27,9 +24,9 @@ if ( !defined('FOOGEN_SLUG' ) ) {
 	define( 'FOOGEN_PATH', plugin_dir_path( __FILE__ ) );
 	define( 'FOOGEN_URL', plugin_dir_url( __FILE__ ) );
 	define( 'FOOGEN_FILE', __FILE__ );
-	define( 'FOOGEN_VERSION', '1.0.1' );
+	define( 'FOOGEN_VERSION', '1.0.2' );
 	define( 'FOOGEN_MIN_PHP', '5.4.0' ); // Minimum of PHP 5.4 required for autoloading, namespaces, etc
-	define( 'FOOGEN_MIN_WP', '5.0.0' );  // Minimum of WordPress 4.4 required
+	define( 'FOOGEN_MIN_WP', '5.5.0' );  // Minimum of WordPress 5.5 required
 }
 
 //include other plugin constants

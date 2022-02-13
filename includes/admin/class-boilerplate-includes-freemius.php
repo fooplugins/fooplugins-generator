@@ -3,7 +3,7 @@
 namespace FooPlugins\Generator\Admin;
 
 /**
- * Pro Class for handling Freemius includes
+ * Class for handling Freemius includes
  */
 
 if ( !class_exists( 'FooPlugins\Generator\Admin\BoilerplateIncludesFreemius' ) ) {
