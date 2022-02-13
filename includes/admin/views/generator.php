@@ -11,7 +11,7 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
 
     $selected_boilerplate = foogen_safe_get_from_array( 'selected_boilerplate', $_POST, false );
     if ( $selected_boilerplate !== false ) {
-	    $boilerplate_data = foogen_safe_get_from_array( $selected_boilerplate, $_POST, array() );
+	    $boilerplate_data = wp_unslash( foogen_safe_get_from_array( $selected_boilerplate, $_POST, array() ) );
     } else {
         //nothing selected!
 	    $boilerplate_error = __( 'Select a boilerplate!', 'foogen' );
@@ -26,13 +26,47 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
 
             jQuery( '.boilerplate_field-' + this.value ).addClass( 'active_boilerplate' );
 
-            jQuery( '.foogen-generator-actions' ).show();
-        });
+            //hide all the buttons
+			jQuery('.foogen-generator-actions button').hide();
+
+            //show the appropriate action buttons
+			var actions = jQuery( '#' + this.value + '-actions' ).val().split(' ');
+			jQuery.each( actions, function( index, action ) {
+				jQuery('.foogen-generator-actions button[value="' + action + '"]').show();
+			});
+
+			jQuery( '.foogen-generator-actions' ).show();
+		});
+
+		//hide all the buttons
+		jQuery('.foogen-generator-actions button').hide();
+
+		var actions = jQuery( '.active_boilerplate input' ).val();
+		if ( actions ) {
+			jQuery( '.foogen-generator-actions' ).show();
+
+			jQuery.each(actions.split(' '), function (index, action) {
+				jQuery('.foogen-generator-actions button[value="' + action + '"]').show();
+			});
+		}
+
+		jQuery('.foogen-tabs a').click( function(e) {
+			jQuery('.foogen-tabs a').removeClass('nav-tab-active');
+
+			jQuery(this).addClass('nav-tab-active');
+
+			var activeTab = jQuery(this).data('tab');
+
+			jQuery( '.foogen-tab-content').hide();
+
+			jQuery( '.foogen-tab-content[data-tab="' + activeTab + '"]').show();
+		});
+
     });
 </script>
 <style>
 	.foogen-generator form {
-		width:500px;
+		width:50%;
 		margin-top:10px;
 		border: solid 3px #aaa;
 		border-radius: 5px;
@@ -60,7 +94,7 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
     }
 
 	.foogen-generator form label{
-		margin-top: 5px;
+		margin: 3px 1px;
 		display: block;
 		font-weight: bold;
 	}
@@ -79,12 +113,44 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
 		width: 100% !important;
 	}
 
-    .foogen-generator-actions {
+	.foogen-generator form span {
+		margin-left: 5px;
+		font-style: italic;
+		display: block;
+		color: #888;
+	}
 
-    }
+	.foogen-generator form input+span {
+		margin-top: 3px;
+	}
 
 	.foogen-generator form .boilerplate-error {
 		color: #800;
+	}
+
+	.foogen-generator form .boilerplate-message {
+		color: #0b0;
+	}
+
+	.foogen-generator .foogen-tab-content {
+		padding-top: 10px;
+	}
+
+	.foogen-generator .foogen-tab-content textarea {
+		height: 500px;
+		width: 100%;
+		border: solid 1px #aaa;
+		border-radius: 2px;
+		background: #fff;
+		overflow-x: hidden;
+		padding: 5px;
+		font-family: "courier new", monospace;
+		font-size: 12px;
+	}
+
+	.foogen-generator .foogen-tabs a {
+		box-shadow: none !important;
+		outline: none !important;
 	}
 
 </style>
@@ -109,7 +175,8 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
             if ( isset( $boilerplate['description'] ) ) {
             ?>
             <div class="boilerplate_field boilerplate_field-<?php echo $boilerplate_name; ?> <?php echo ($selected_boilerplate === $boilerplate_name) ? 'active_boilerplate' : ''; ?>">
-                <?php echo esc_html( $boilerplate['description'] ); ?>
+                <i class="dashicons dashicons-info"></i> <?php echo esc_html( $boilerplate['description'] ); ?>
+				<input type="hidden" id="<?php echo esc_attr( $boilerplate_name ); ?>-actions" value="<?php echo esc_html( $boilerplate['actions'] ); ?>" />
             </div>
             <?php
             }
@@ -118,23 +185,45 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
 	            $source = foogen_safe_get_from_array( 'source', $field, 'input' );
 	            if ( $source !== 'input' ) continue;
 	            $default_field_value = foogen_safe_get_from_array( 'default', $field, '' );
-	            $field_value = foogen_safe_get_from_array( $field_key, $boilerplate_data, $default_field_value );
+	            if ( $selected_boilerplate === $boilerplate_name ) {
+					$field_value = foogen_safe_get_from_array( $field_key, $boilerplate_data, $default_field_value );
+				} else {
+					$field_value = $default_field_value;
+				}
+	            $field_id = $boilerplate_name . '_' . $field_key;
+	            $field_label = $field['label'];
+	            if ( isset( $field['required'] ) && $field['required'] ) {
+					$field_label .= ' *';
+				}
                 ?>
         <div class="boilerplate_field boilerplate_field-<?php echo $boilerplate_name; ?> <?php echo ($selected_boilerplate === $boilerplate_name) ? 'active_boilerplate' : ''; ?>">
-            <label><?php echo esc_html( $field['label'] ); ?></label>
+            <label for="<?php echo esc_attr( $field_id ); ?>"><?php echo esc_html( $field_label ); ?></label>
             <?php if ( $field['type'] === 'text' ) { ?>
-                <input type="text" name="<?php echo $boilerplate_name; ?>[<?php echo $field_key; ?>]" value="<?php echo esc_attr( $field_value ); ?>"/>
+                <input id="<?php echo esc_attr( $field_id ); ?>" type="text" name="<?php echo $boilerplate_name; ?>[<?php echo $field_key; ?>]" value="<?php echo esc_attr( $field_value ); ?>"/>
             <?php } else if ( $field['type'] === 'textarea' ) { ?>
-                <textarea name="<?php echo $boilerplate_name; ?>[<?php echo $field_key; ?>]"><?php echo esc_html( $field_value ) ?></textarea>
+                <textarea id="<?php echo esc_attr( $field_id ); ?>" name="<?php echo $boilerplate_name; ?>[<?php echo $field_key; ?>]"><?php echo esc_html( $field_value ) ?></textarea>
+			<?php } else if ( $field['type'] === 'checkbox' ) { ?>
+				<input id="<?php echo esc_attr( $field_id ); ?>" type="checkbox" name="<?php echo $boilerplate_name; ?>[<?php echo $field_key; ?>]" value="on" <?php echo ( $field_value === 'on' ) ? ' checked="checked"' : ''; ?> />
             <?php } ?>
+			<?php if ( isset( $field['desc'] ) ) { ?>
+				<span><?php echo esc_html( $field['desc'] ); ?></span>
+			<?php } ?>
         </div>
         <?php } } ?>
-		<div class="foogen-generator-actions" <?php echo ($selected_boilerplate === false) ? 'style="display:none"' : ''; ?>>
+		<div class="foogen-generator-actions" style="display:none">
+			<button name="action" class="button button-primary" value="show"><?php _e( 'Generate', 'foogen' ); ?></button>
 			<button name="action" class="button button-primary" value="download"><?php _e( 'Generate &amp; download .zip', 'foogen' ); ?></button>
-			<?php if ( ! empty( $boilerplate_error ) ) {
-				echo "<p class=\"boilerplate-error\">{$boilerplate_error}</p>";
+			<button name="action" class="button button-primary" value="install"><?php _e( 'Generate &amp; Install Plugin', 'foogen' ); ?></button>
+
+			<?php foreach ( foogen_get_global_messages() as $message ) {
+				if ( $message['error'] ) {
+					echo "<p class=\"boilerplate-error\">{$message['message']}</p>";
+				} else {
+					echo "<p class=\"boilerplate-message\">{$message['message']}</p>";
+				}
 			} ?>
 			<?php wp_nonce_field( 'foogen_generate', 'foogen_generate' ); ?>
 		</div>
 	</form>
+	<?php do_action( 'FooPlugins\Generator\Admin\AfterForm' ); ?>
 </div>

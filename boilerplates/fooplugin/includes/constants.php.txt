@@ -1,0 +1,20 @@
+<?php
+/**
+ * Contains the Global constants used throughout {name}
+ */
+
+//options
+define( '{constant}_OPTION_DATA', '{slug}_data' );
+
+//transients
+define( '{constant}_TRANSIENT_UPDATED', '{slug}_updated' );
+define( '{constant}_TRANSIENT_ACTIVATION_REDIRECT', '{slug}_redirect' );
+
+//custom post types
+define( '{constant}_CPT_{cpt_constant}', '{slug}_{cpt_slug}' );
+
+//taxonomies
+define( '{constant}_CT_{tax_constant}', '{slug}_{tax_slug}' );
+
+//post meta
+define( '{constant}_{cpt_constant}_META_TEST', '_test' );

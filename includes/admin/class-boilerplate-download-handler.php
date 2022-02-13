@@ -42,23 +42,10 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateDownloadHandler' ) )
 
 			$boilerplate_state = $state_manager->build_state( $boilerplate_object, $boilerplate_data );
 
-			$variables = array();
-			foreach( $boilerplate_state as $key => $item ) {
-				$variables['{' . $key . '}'] = $item;
-			}
-
 			$upload_dir = wp_upload_dir();
 
 			//create the generator
-			$zip_generator = new BoilerplateZipGenerator( array(
-				'name'                 => $boilerplate_name,
-				'process_extensions'   => isset( $boilerplate['process_extensions'] ) ? $boilerplate['process_extensions'] : array( 'php', 'css', 'js', 'txt', ),
-				'source_directory'     => $boilerplate_object['path'],
-				'zip_root_directory'   => $boilerplate_object['zip_root_directory'],
-				'download_filename'    => $boilerplate_object['download_filename'],
-				'variables'            => $variables,
-				'zip_temp_directory'   => $upload_dir['path'],
-			) );
+			$zip_generator = new BoilerplateZipGenerator( $boilerplate_object, $boilerplate_state, $upload_dir['path'] );
 
 			//generate the zip file
 			$zip_generator->generate();

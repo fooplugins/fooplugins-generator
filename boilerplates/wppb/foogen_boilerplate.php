@@ -4,6 +4,7 @@ return array(
 	'name'        => 'wppb',
 	'title'       => __( 'WPPB Plugin', 'foogen' ),
 	'description' => __( 'A WordPress plugin using the WordPress Plugin Boilerplate as a template. No pre-requisites needed to run before activation', 'foogen' ),
+	'actions'       => 'show download install',
 	'zip_root_directory' => '{filename}',
 	'download_filename' => '{filename}.zip',
 	'process_extensions' => array( 'php', 'css', 'js', 'txt' ),
@@ -41,17 +42,17 @@ return array(
 		'filename' => array(
 			'source' => 'field',
 			'field' => 'name',
-			'function' => '__foogen_convert_to_filename',
+			'function' => '__foogen_filename',
 		),
 		'class' => array(
 			'source' => 'field',
 			'field' => 'name',
-			'function' => '__foogen_convert_to_class',
+			'function' => '__foogen_class',
 		),
 		'constant' => array(
 			'source' => 'field',
 			'field' => 'name',
-			'function' => '__foogen_convert_to_constant',
+			'function' => '__foogen_constant',
 		)
 	)
 );

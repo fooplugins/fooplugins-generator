@@ -1,0 +1,24 @@
+{
+    "name": "{slug}",
+    "description": "{desc}",
+    "type": "library",
+    "require": {
+        "composer/installers": "v1.0.12"
+    },
+    "autoload"    : {
+        "psr-4" : {
+            "{namespace}\\" : "includes"
+        }
+    },
+    "extra": {
+        "installer-paths": {
+            "vendor/{$name}/": ["type:wordpress-plugin"]
+        }
+    },
+    "license": "GPL 3.0",
+    "authors": [
+        {
+            "name": "{author}"
+        }
+    ]
+}

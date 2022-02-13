@@ -1,0 +1,68 @@
+<?php
+namespace {namespace}\Objects;
+
+use stdClass;
+
+/**
+ * The main {cpt} class. This class "wraps" the {cpt} Custom Post Type, and allows you to load instances and add properties.
+ */
+if ( ! class_exists( '{namespace}\Objects\{cpt}' ) ) {
+
+	class {cpt} extends stdClass {
+		private $_post;
+
+		/**
+		 * constructor for a new instance
+		 *
+		 * @param $post
+		 */
+		function __construct($post = null) {
+			$this->_post = null;
+			$this->ID = 0;
+			if ( isset( $post ) ) {
+				$this->_post = $post;
+				$this->ID = $post->ID;
+				$this->slug = $post->post_name;
+				$this->name = $post->post_title;
+				do_action( '{namespace}\Objects\{cpt}\Loaded', $this );
+			}
+		}
+
+		/**
+		 * Static function to load an instance by slug
+		 *
+		 * @param $slug
+		 *
+		 * @return {cpt} | boolean
+		 */
+		public static function get_by_slug( $slug ) {
+			$args = array(
+				'name'        => $slug,
+				'post_type'   => {constant}_CPT_{cpt_constant},
+				'post_status' => 'publish',
+				'numberposts' => 1
+			);
+
+			$plugins = get_posts( $args );
+			if ( $plugins ) {
+				return new self( $plugins[0] );
+			}
+			return false;
+		}
+
+		/**
+		 * Static function to load an instance by post id
+		 *
+		 * @param $post_id
+		 *
+		 * @return {cpt} | boolean
+		 */
+		public static function get_by_id( $post_id ) {
+			$post = get_post( intval( $post_id ) );
+			if ( $post ) {
+				return new self( $post );
+			}
+			return false;
+		}
+	}
+}

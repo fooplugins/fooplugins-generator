@@ -1,0 +1,19 @@
+<?php
+namespace {namespace}\Pro;
+
+/**
+ * {name} Pro Init Class
+ */
+
+if ( !class_exists( '{namespace}\Pro\Init' ) ) {
+
+	class Init {
+
+		/**
+		 * Initialize the PRO features of {name}
+		 */
+		public function __construct() {
+			//run PRO code here, or include PRO files
+		}
+	}
+}

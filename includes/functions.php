@@ -88,14 +88,21 @@ function foogen_safe_get_from_request( $key ) {
  * @return mixed|void
  */
 function foogen_get_all_boilerplates() {
+	global $foogen_boilerplates;
+
+	if ( isset( $foogen_boilerplates ) ) {
+		return $foogen_boilerplates;
+	}
 
 	//get the default boilerplates built into the plugin
 	$loader = new BoilerplateLoader();
-	$boilerplates = $loader->load_plugin_boilderplates();
+	$foogen_boilerplates = $loader->load_plugin_boilderplates();
 
-	//get the boilerplates saved in the current theme location
+	//TODO : get the boilerplates saved in the current theme location
 
-	return apply_filters( 'FooPlugins\Generator\Admin\GetAllBoilerplates', $boilerplates );
+	$foogen_boilerplates = apply_filters( 'FooPlugins\Generator\Admin\GetAllBoilerplates', $foogen_boilerplates );
+
+	return $foogen_boilerplates;
 }
 
 /**
@@ -105,7 +112,7 @@ function foogen_get_all_boilerplates() {
  *
  * @return string
  */
-function __foogen_convert_to_function( $value ) {
+function __foogen_function( $value ) {
 	return strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '_', $value ) ) );
 }
 
@@ -116,7 +123,7 @@ function __foogen_convert_to_function( $value ) {
  *
  * @return string
  */
-function __foogen_convert_to_filename( $value ) {
+function __foogen_filename( $value ) {
 	return strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '-', $value ) ) );
 }
 
@@ -127,7 +134,7 @@ function __foogen_convert_to_filename( $value ) {
  *
  * @return string
  */
-function __foogen_convert_to_constant( $value ) {
+function __foogen_constant( $value ) {
 	return strtoupper( trim( preg_replace( '/[^A-Za-z0-9-]+/', '_', $value ) ) );
 }
 
@@ -138,7 +145,7 @@ function __foogen_convert_to_constant( $value ) {
  *
  * @return string
  */
-function __foogen_convert_to_class( $value ) {
+function __foogen_class( $value ) {
 	return str_replace( ' ', '_', ucwords( str_replace( array('-', '_'), ' ', $value ) ) );
 }
 
@@ -151,4 +158,70 @@ function __foogen_convert_to_class( $value ) {
  */
 function __foogen_slugify( $value ) {
 	return sanitize_title_with_dashes( $value );
+}
+
+/**
+ * Uppercase a string
+ *
+ * @param $value
+ *
+ * @return string
+ */
+function __foogen_uppercase( $value ) {
+	return strtoupper( $value );
+}
+
+/**
+ * Lowercase a string
+ *
+ * @param $value
+ *
+ * @return string
+ */
+function __foogen_lowercase( $value ) {
+	return strtolower( $value );
+}
+
+/**
+ * Converts a string into a function name that can be used for the Freemius global function
+ *
+ * @param $value
+ *
+ * @return string
+ */
+function __foogen_freemius_function( $value ) {
+	return __foogen_function( $value ) . '_fs';
+}
+
+
+/**
+ * Adds a global message used on the generator form
+ *
+ * @param $message
+ * @param bool $is_error
+ */
+function foogen_add_global_message( $message, $is_error = false ) {
+	global $foogen_messages;
+
+	if ( !isset( $foogen_messages ) ) {
+		$foogen_messages = array();
+	}
+
+	$foogen_messages[] = array(
+		'message' => $message,
+		'error' => $is_error
+	);
+}
+
+/**
+ * Gets all global message used on the generator form
+ */
+function foogen_get_global_messages() {
+	global $foogen_messages;
+
+	if ( !isset( $foogen_messages ) ) {
+		$foogen_messages = array();
+	}
+
+	return $foogen_messages;
 }

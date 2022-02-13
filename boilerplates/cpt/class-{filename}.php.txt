@@ -1,0 +1,111 @@
+<?php
+namespace {namespace}\PostTypes;
+
+/*
+ * {name} Custom Post Type
+ */
+
+if ( ! class_exists( '{namespace}\PostTypes\{name}' ) ) {
+
+	class {name} {
+
+		function __construct() {
+			//register the post types
+			add_action( 'init', array( $this, 'register' ) );
+
+			//update post type messages
+			add_filter( 'post_updated_messages', array( $this, 'update_messages' ) );
+
+			//update post bulk messages
+			add_filter( 'bulk_post_updated_messages', array( $this, 'update_bulk_messages' ), 10, 2 );
+		}
+
+		function register() {
+			//allow others to override the {slug} post type
+			$args = apply_filters( '{namespace}\PostTypes\{name}\RegisterArgs',
+				array(
+					'labels'        => array(
+						'name'               => __( '{plural}', '{textdomain}' ),
+						'singular_name'      => __( '{name}', '{textdomain}' ),
+						'add_new'            => __( 'Add {name}', '{textdomain}' ),
+						'add_new_item'       => __( 'Add New {name}', '{textdomain}' ),
+						'edit_item'          => __( 'Edit {name}', '{textdomain}' ),
+						'new_item'           => __( 'New {name}', '{textdomain}' ),
+						'view_item'          => __( 'View {plural}', '{textdomain}' ),
+						'search_items'       => __( 'Search {plural}', '{textdomain}' ),
+						'not_found'          => __( 'No {plural} found', '{textdomain}' ),
+						'not_found_in_trash' => __( 'No {plural} found in Trash', '{textdomain}' ),
+						'menu_name'          => __( '{plural}', '{textdomain}' ),
+						'all_items'          => __( '{plural}', '{textdomain}' )
+					),
+					'hierarchical'  => true,
+					'public'        => false,
+					'rewrite'       => false,
+					'show_ui'       => true,
+					'show_in_menu'  => true,
+					'menu_icon'     => 'dashicons-media-text',
+					'supports'      => array('title', 'editor', 'revisions' ),
+				)
+			);
+
+			register_post_type( '{slug}', $args );
+		}
+
+		/**
+		 * Customize the update messages for a {name}
+		 *
+		 * @global object $post     The current post object.
+		 *
+		 * @param array   $messages Array of default post updated messages.
+		 *
+		 * @return array $messages Amended array of post updated messages.
+		 */
+		public function update_messages( $messages ) {
+
+			global $post;
+
+			// Add our {name} messages
+			$messages['{slug}'] = apply_filters( '{namespace}\PostTypes\{name}\UpdateMessages',
+				array(
+					0  => '',
+					1  => __( '{name} updated.', '{textdomain}' ),
+					2  => __( '{name} custom field updated.', '{textdomain}' ),
+					3  => __( '{name} custom field deleted.', '{textdomain}' ),
+					4  => __( '{name} updated.', '{textdomain}' ),
+					5  => isset($_GET['revision']) ? sprintf( __( '{name} restored to revision from %s.', '{textdomain}' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+					6  => __( '{name} published.', '{textdomain}' ),
+					7  => __( '{name} saved.', '{textdomain}' ),
+					8  => __( '{name} submitted.', '{textdomain}' ),
+					9  => sprintf( __( '{plural} scheduled for: <strong>%1$s</strong>.', '{textdomain}' ), date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) ),
+					10 => __( '{name} draft updated.', '{textdomain}' )
+				)
+			);
+
+			return $messages;
+
+		}
+
+		/**
+		 * Customize the bulk update messages for a {name}
+		 *
+		 * @param array $bulk_messages Array of default bulk updated messages.
+		 * @param array $bulk_counts   Array containing count of posts involved in the action.
+		 *
+		 * @return array mixed            Amended array of bulk updated messages.
+		 */
+		function update_bulk_messages( $bulk_messages, $bulk_counts ) {
+
+			$bulk_messages['{slug}'] = apply_filters( '{namespace}\PostTypes\{name}\BulkMessages',
+				array(
+					'updated'   => _n( '%s {name} updated.', '%s {plural} updated.', $bulk_counts['updated'], '{textdomain}' ),
+					'locked'    => _n( '%s {name} not updated, somebody is editing it.', '%s {plural} not updated, somebody is editing them.', $bulk_counts['locked'], '{textdomain}' ),
+					'deleted'   => _n( '%s {name} permanently deleted.', '%s {plural} permanently deleted.', $bulk_counts['deleted'], '{textdomain}' ),
+					'trashed'   => _n( '%s {name} moved to the Trash.', '%s {plural} moved to the Trash.', $bulk_counts['trashed'], '{textdomain}' ),
+					'untrashed' => _n( '%s {name} restored from the Trash.', '%s {plural} restored from the Trash.', $bulk_counts['untrashed'], '{textdomain}' ),
+				)
+			);
+
+			return $bulk_messages;
+		}
+	}
+}

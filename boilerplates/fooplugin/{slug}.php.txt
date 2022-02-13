@@ -1,0 +1,62 @@
+<?php
+/*
+Plugin Name: {name}
+Description: {desc}
+Version:     1.0.0
+Author:      {author}
+Author URI:  {author_url}
+Text Domain: {slug}
+License:     GPL-2.0+
+Domain Path: /languages
+
+@fs_premium_only /includes/pro/
+
+*/
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+//define some {name} essentials
+if ( !defined('{constant}_SLUG' ) ) {
+	define( '{constant}_SLUG', '{slug}' );
+	define( '{constant}_NAMESPACE', '{namespace}' );
+	define( '{constant}_DIR', __DIR__ );
+	define( '{constant}_PATH', plugin_dir_path( __FILE__ ) );
+	define( '{constant}_URL', plugin_dir_url( __FILE__ ) );
+	define( '{constant}_FILE', __FILE__ );
+	define( '{constant}_VERSION', '1.0.0' );
+	define( '{constant}_MIN_PHP', '5.4.0' ); // Minimum of PHP 5.4 required for autoloading, namespaces, etc
+	define( '{constant}_MIN_WP', '4.4.0' );  // Minimum of WordPress 4.4 required
+}
+
+//include other essential {name} constants
+require_once( {constant}_PATH . 'includes/constants.php' );
+
+//include common global {name} functions
+require_once( {constant}_PATH . 'includes/functions.php' );
+
+//do a check to see if either free/pro version of the plugin is already running
+if ( function_exists( '{freemius_function}' ) ) {
+	{freemius_function}()->set_basename( true, __FILE__ );
+} else {
+	if ( ! function_exists( '{freemius_function}' ) ) {
+		require_once( {constant}_PATH . 'includes/freemius.php' );
+	}
+}
+
+//check minimum requirements before loading the plugin
+if ( require_once {constant}_PATH . 'includes/startup-checks.php' ) {
+
+	//start autoloader
+	require_once( {constant}_PATH . 'vendor/autoload.php' );
+
+	spl_autoload_register( '{slug}_autoloader' );
+
+	//hook in activation
+	register_activation_hook( __FILE__, array( '{namespace}\Activation', 'activate' ) );
+
+	//start the plugin!
+	new {namespace}\Init();
+}

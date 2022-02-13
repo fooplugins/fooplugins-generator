@@ -1,0 +1,49 @@
+<?php
+namespace {namespace}\PostTypes;
+
+/*
+ * {cpt} Custom Post Type
+ */
+
+if ( ! class_exists( '{namespace}\PostTypes\{cpt}' ) ) {
+
+	class {cpt} {
+
+		function __construct() {
+			//register the post types
+			add_action( 'init', array( $this, 'register' ) );
+		}
+
+		function register() {
+			//allow others to override the {cpt} post type register args
+			//see all available args : https://developer.wordpress.org/reference/functions/register_post_type/
+			$args = apply_filters( '{namespace}\PostTypes\{cpt}\RegisterArgs',
+				array(
+					'labels'        => array(
+						'name'               => __( '{cpt}s', '{slug}' ),
+						'singular_name'      => __( '{cpt}', '{slug}' ),
+						'add_new'            => __( 'Add {cpt}', '{slug}' ),
+						'add_new_item'       => __( 'Add New {cpt}', '{slug}' ),
+						'edit_item'          => __( 'Edit {cpt}', '{slug}' ),
+						'new_item'           => __( 'New {cpt}', '{slug}' ),
+						'view_item'          => __( 'View {cpt}s', '{slug}' ),
+						'search_items'       => __( 'Search {cpt}s', '{slug}' ),
+						'not_found'          => __( 'No {cpt}s found', '{slug}' ),
+						'not_found_in_trash' => __( 'No {cpt}s found in Trash', '{slug}' ),
+						'menu_name'          => __( '{cpt}s', '{slug}' ),
+						'all_items'          => __( '{cpt}s', '{slug}' )
+					),
+					'hierarchical'  => true,
+					'public'        => false,
+					'rewrite'       => false,
+					'show_ui'       => true,
+					'show_in_menu'  => true,
+					'menu_icon'     => 'dashicons-chart-area',
+					'supports'      => array( 'title', 'editor', 'comments', 'revisions', 'trackbacks', 'author', 'excerpt', 'page-attributes', 'thumbnail', 'custom-fields', 'post-formats' ),
+				)
+			);
+
+			register_post_type( {constant}_CPT_{cpt_constant}, $args );
+		}
+	}
+}
