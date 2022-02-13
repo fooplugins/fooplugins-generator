@@ -3,7 +3,7 @@
 return array(
 	'name'               => 'fooplugin',
 	'title'              => __( 'Freemius Plugin', 'foogen' ),
-	'description'        => __( 'A full plugin, including all initialization code for Freemius', 'foogen' ),
+	'description'        => __( 'A full plugin, including all initialization code for Freemius. Before activating, run "composer install" and "npm install" in the plugin root directory.', 'foogen' ),
 	'actions'            => 'download install',
 	'zip_root_directory' => '{filename}',
 	'download_filename'  => '{filename}.zip',
@@ -15,11 +15,7 @@ return array(
 			'source'    => 'https://github.com/Freemius/wordpress-sdk/zipball/master'
 		)
 	),
-	'process_exclude_directories' => array(
-		'assets\vendor\foofields',
-		'assets\vendor\foofields\maps',
-		'assets\vendor\selectize'
-	),
+	//'process_exclude_directories' => array(	), // these folders will not be processed.
 	'fields'             => array(
 		'name'                => array(
 			'label'   => __( 'Plugin Name', 'foogen' ),
@@ -34,7 +30,8 @@ return array(
 		'namespace'           => array(
 			'label' => __( 'Plugin Namespace', 'foogen' ),
 			'type'  => 'text',
-			'desc'  => __( 'The root namespace of the plugin', 'foogen' )
+			'default'  => __( 'CoolPlugins\\CoolThing', 'foogen' ),
+			'desc'     => __( 'What is the root namespace of the plugin? Usually it\'s the company name followed by the plugin name e.g. CoolPlugins\\CoolThing', 'foogen' ),
 		),
 		'freemius_id'         => array(
 			'label' => __( 'Freemius Plugin ID', 'foogen' ),

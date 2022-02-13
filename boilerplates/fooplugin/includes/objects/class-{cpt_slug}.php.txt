@@ -4,7 +4,7 @@ namespace {namespace}\Objects;
 use stdClass;
 
 /**
- * The main {cpt} class
+ * The main {cpt} class. This class "wraps" the {cpt} Custom Post Type, and allows you to load instances and add properties.
  */
 if ( ! class_exists( '{namespace}\Objects\{cpt}' ) ) {
 
