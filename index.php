@@ -38,15 +38,6 @@ require_once( FOOGEN_PATH . 'includes/constants.php' );
 //include common global functions
 require_once( FOOGEN_PATH . 'includes/functions.php' );
 
-//do a check to see if either free/pro version of the plugin is already running
-if ( function_exists( 'foogen_fs' ) ) {
-	foogen_fs()->set_basename( true, __FILE__ );
-} else {
-	if ( ! function_exists( 'foogen_fs' ) ) {
-		require_once( FOOGEN_PATH . 'includes/freemius.php' );
-	}
-}
-
 //check minimum requirements before loading the plugin
 if ( require_once FOOGEN_PATH . 'includes/startup-checks.php' ) {
 

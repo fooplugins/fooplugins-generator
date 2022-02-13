@@ -3,12 +3,6 @@ namespace {namespace}\PostTypes;
 
 /*
  * {name} Custom Post Type
- *
- * Test slugify : {name:slugify}
- * Test slugify (full) : {name:__foogen_slugify}
- * Test convert_to_function : {name:convert_to_function}
- * Test convert_to_constant : {name:convert_to_constant}
- *
  */
 
 if ( ! class_exists( '{namespace}\PostTypes\{name}' ) ) {

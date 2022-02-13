@@ -2,7 +2,7 @@
 
 return array(
 	'name'        => 'test',
-	'title'       => __( 'Test File Generator', 'foogen' ),
+	'title'       => __( 'Test Generator', 'foogen' ),
 	'exclude_files' => array( '.DS_Store', 'foogen_boilerplate.php', 'foogen_include.php', 'excluded.txt' ),
 	'exclude_directories' => array( '.git', '.svn', '.', '..', 'excluded' ),
 	'description' => __( 'Generates a simple txt file to showcase the use of all the capabilities of the generator', 'foogen' ),

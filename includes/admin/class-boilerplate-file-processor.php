@@ -60,7 +60,13 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateFileProcessor' ) ) {
 
 				$dest_filename = $this->boilerplate_processor->process_filename( $dest_filename );
 
-				$contents = $this->process_file_contents( file_get_contents( $filename ), $base_filename );
+				$exclude_processing = $this->check_directory_excluded( $filename, 'process_exclude_directories' );
+
+				$contents = file_get_contents( $filename );
+
+				if ( !$exclude_processing ) {
+					$contents = $this->process_file_contents( $contents, $base_filename );
+				}
 
 				$contents = apply_filters( "FooPlugins\Generator\Admin\BoilerplateFileProcessor\ProcessFile", $contents, $filename, $dest_filename, $this );
 
@@ -109,13 +115,37 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateFileProcessor' ) ) {
 
 			$directory = ltrim( str_replace( $source_path, '', $filename->getPath() ), '\\' );
 
-			if ( in_array( $directory, $this->boilerplate['exclude_directories'] ) ) {
+			if ( $this->check_directory_excluded( $filename, 'exclude_directories' ) ) {
 				return true;
 			}
 
 			foreach ( $this->get_rules_for_current_state() as $rule ) {
 				if ( isset( $rule['type'] ) && 'exclude_directories' === $rule['type'] ) {
 					if ( in_array( $directory, $rule['directories'] ) ) {
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+
+		/**
+		 * Check that the directory of the filename is excluded
+		 *
+		 * @param $filename
+		 * @param string $exclude_setting
+		 *
+		 * @return bool
+		 */
+		function check_directory_excluded( $filename, $exclude_setting = 'exclude_directories' ) {
+			$source_path = realpath( $this->boilerplate['path'] );
+
+			$directory = ltrim( str_replace( $source_path, '', $filename->getPath() ), '\\' );
+
+			if ( array_key_exists( $exclude_setting, $this->boilerplate ) ) {
+				if ( is_array( $this->boilerplate[ $exclude_setting ] ) ) {
+					if ( in_array( $directory, $this->boilerplate[ $exclude_setting ] ) ) {
 						return true;
 					}
 				}

@@ -2,8 +2,6 @@
 namespace FooPlugins\Generator\Admin;
 
 use FilesystemIterator;
-use FooPlugins\Generator\Admin\BoilerplateZipGenerator;
-use mysql_xdevapi\Exception;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ZipArchive;

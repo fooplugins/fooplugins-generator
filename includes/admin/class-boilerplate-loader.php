@@ -14,6 +14,7 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateLoader' ) ) {
 
 		/**
 		 * Loads all the default boilerplates
+		 *
 		 * @return array
 		 */
 		public function load_plugin_boilderplates() {
@@ -25,19 +26,19 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateLoader' ) ) {
 		/**
 		 * Loads all boilerplates from a specific directory
 		 *
-		 * @param $directory
+		 * @param string $directory Path used for loading boilerplaets.
 		 *
 		 * @return array
 		 */
 		public function load_boilerplates_from_directory( $directory ) {
 			$boilerplates = array();
 
-			//loop through all folders
-			$root = new RecursiveDirectoryIterator( $directory );
+			// Loop through all folders.
+			$root     = new RecursiveDirectoryIterator( $directory );
 			$iterator = new RecursiveIteratorIterator( $root );
 
 			foreach ( $iterator as $file ) {
-				if ( !$file->isDir() ) {
+				if ( ! $file->isDir() ) {
 
 					$filename = $file->getPathname();
 
@@ -56,19 +57,19 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateLoader' ) ) {
 		/**
 		 * Sets some defaults for the boilerplate
 		 *
-		 * @param $boilerplate
+		 * @param array $boilerplate The boilerplate array.
 		 *
-		 * @return mixed
+		 * @return array
 		 */
 		private function build_boilerplate( $boilerplate ) {
-			if  ( !isset( $boilerplate['process_extensions'] ) ) {
+			if ( ! isset( $boilerplate['process_extensions'] ) ) {
 				$boilerplate['process_extensions'] = array( 'php', 'css', 'js', 'txt', 'md' );
 			}
-			if  ( !isset( $boilerplate['exclude_files'] ) ) {
+			if ( ! isset( $boilerplate['exclude_files'] ) ) {
 				$boilerplate['exclude_files'] = array( '.git', '.svn', '.DS_Store', '.gitignore', '.', '..', 'foogen_boilerplate.php', 'foogen_include.php' );
 			}
-			if  ( !isset( $boilerplate['exclude_directories'] ) ) {
-				$boilerplate['exclude_directories'] = array( '.git', '.svn', '.', '..', );
+			if ( ! isset( $boilerplate['exclude_directories'] ) ) {
+				$boilerplate['exclude_directories'] = array( '.git', '.svn', '.', '..' );
 			}
 
 			return $boilerplate;

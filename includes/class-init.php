@@ -27,12 +27,6 @@ if ( !class_exists( 'FooPlugins\Generator\Init' ) ) {
 			if ( is_admin() ) {
 				new namespace\Admin\Init();
 			}
-
-			if ( foogen_fs()->is__premium_only() ) {
-				if ( foogen_fs()->can_use_premium_code() ) {
-					new namespace\Pro\Init();
-				}
-			}
 		}
 	}
 }

@@ -185,7 +185,11 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
 	            $source = foogen_safe_get_from_array( 'source', $field, 'input' );
 	            if ( $source !== 'input' ) continue;
 	            $default_field_value = foogen_safe_get_from_array( 'default', $field, '' );
-	            $field_value = foogen_safe_get_from_array( $field_key, $boilerplate_data, $default_field_value );
+	            if ( $selected_boilerplate === $boilerplate_name ) {
+					$field_value = foogen_safe_get_from_array( $field_key, $boilerplate_data, $default_field_value );
+				} else {
+					$field_value = $default_field_value;
+				}
 	            $field_id = $boilerplate_name . '_' . $field_key;
 	            $field_label = $field['label'];
 	            if ( isset( $field['required'] ) && $field['required'] ) {
@@ -195,7 +199,7 @@ if ( ! empty( $nonce ) && wp_verify_nonce( $nonce, 'foogen_generate' ) ) {
         <div class="boilerplate_field boilerplate_field-<?php echo $boilerplate_name; ?> <?php echo ($selected_boilerplate === $boilerplate_name) ? 'active_boilerplate' : ''; ?>">
             <label for="<?php echo esc_attr( $field_id ); ?>"><?php echo esc_html( $field_label ); ?></label>
             <?php if ( $field['type'] === 'text' ) { ?>
-                <input id="<?php echo esc_attr( $field_id ); ?>" type="text" name="<?php echo $boilerplate_name; ?>[<?php echo $field_key; ?>]" value="<?php echo esc_attr( $field_value ); ?>"/>
+                <input id="<?php echo esc_attr( $field_id ); ?>" type="text" name="<?php echo $boilerplate_name; ?>[<?php echo $field_key; ?>]" value="<?php echo esc_attr( stripslashes( $field_value ) ); ?>"/>
             <?php } else if ( $field['type'] === 'textarea' ) { ?>
                 <textarea id="<?php echo esc_attr( $field_id ); ?>" name="<?php echo $boilerplate_name; ?>[<?php echo $field_key; ?>]"><?php echo esc_html( $field_value ) ?></textarea>
 			<?php } else if ( $field['type'] === 'checkbox' ) { ?>

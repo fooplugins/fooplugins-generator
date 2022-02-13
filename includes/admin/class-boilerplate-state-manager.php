@@ -43,7 +43,7 @@ if ( ! class_exists( 'FooPlugins\Generator\Admin\BoilerplateStateManager' ) ) {
 				$source = foogen_safe_get_from_array( 'source', $field, 'input' );
 				$value = apply_filters( 'Fooplugins\Generator\Admin\BoilerplateStateManager\GetFieldValue\\' . $source, null, $field_key, $field, $boilerplate_data, $this->state );
 				if ( $value !== null ) {
-					$this->state[ $field_key ] = $value;
+					$this->state[ $field_key ] = stripslashes( $value );
 
 					if ( empty( $value ) && isset( $field['required'] ) && $field['required'] ) {
 						$this->errors[] = $field;
