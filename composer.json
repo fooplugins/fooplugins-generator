@@ -13,15 +13,6 @@
     "extra": {
         "installer-paths": {
             "vendor/{$name}/": ["type:wordpress-plugin"]
-        },
-        "mozart": {
-            "dep_namespace": "FooPlugins\\Generator\\Dependencies\\",
-            "dep_directory": "/includes/dependencies/",
-            "classmap_directory": "/classes/dependencies/",
-            "classmap_prefix": "FOOGEN_",
-            "packages": [
-                "erusev/parsedown"
-            ]
         }
     },
     "license": "GPL 3.0",
